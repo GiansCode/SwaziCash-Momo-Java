@@ -2,6 +2,7 @@ package cash.swazi.client;
 
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
+import cash.swazi.model.PaymentRequest;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CollectionsAPIClient extends BasicAPIClient {
     private final Gson gson = new Gson();
@@ -37,7 +39,54 @@ public class CollectionsAPIClient extends BasicAPIClient {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
         }
+
         return null;
     }
 
+    public PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, String targetEnvironment, PaymentRequest request) throws IOException {
+        Options options = getOptions();
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
+        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
+        headers.put(Headers.CALLBACK_URL, callbackUrl);
+        headers.put(Headers.REFERENCE_ID, referenceId.toString());
+        headers.put(Headers.TARGET_ENVIRONMENT, targetEnvironment);
+
+        String body = gson.toJson(request);
+
+        try {
+            HttpResponse response = getRestClient().post("requesttopay", headers, body);
+            return PaymentRequestResponse.getResponseFor(response.getStatusLine().getStatusCode());
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid baseURI or request path changed!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public enum PaymentRequestResponse {
+        ACCEPTED(202),
+        BAD_REQUEST(400),
+        CONFLICT(409),
+        INTERNAL_SERVER_ERROR(500);
+
+        private final int errorCode;
+
+        PaymentRequestResponse(int errorCode) {
+            this.errorCode = errorCode;
+        }
+
+        public int getErrorCode() {
+            return errorCode;
+        }
+
+        public static PaymentRequestResponse getResponseFor(int status) {
+            for (PaymentRequestResponse resp : values()) {
+                if (resp.errorCode == status) {
+                    return resp;
+                }
+            }
+            return null;
+        }
+    }
 }
