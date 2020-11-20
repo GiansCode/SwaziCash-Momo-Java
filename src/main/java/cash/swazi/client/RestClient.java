@@ -43,7 +43,7 @@ public final class RestClient implements IRestClient {
     }
 
     @Override
-    public final HttpResponse get(String path, Map<String, String> headers, String body) throws URISyntaxException, IOException {
+    public final HttpResponse get(String path, Map<String, String> headers) throws URISyntaxException, IOException {
         URI uri = getUri(path);
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : headers.entrySet()) {

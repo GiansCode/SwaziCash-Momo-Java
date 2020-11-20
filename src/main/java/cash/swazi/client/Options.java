@@ -4,7 +4,6 @@ import cash.swazi.util.AuthUtils;
 import org.apache.commons.codec.binary.Base64;
 
 public final class Options {
-    private static final String AUTH_FORMAT = "%s:%s";
     private final String primaryKey;
     private final String apiSecret;
     private final String userID;
@@ -34,5 +33,9 @@ public final class Options {
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public String getAuthorization() {
+        return authorization;
     }
 }
