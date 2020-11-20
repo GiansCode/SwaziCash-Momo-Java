@@ -2,7 +2,7 @@ package cash.swazi.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class AuthUtils {
+public final class AuthUtils {
     private AuthUtils() {}
 
     public static String encodeBasicAuthentication(String... input) {

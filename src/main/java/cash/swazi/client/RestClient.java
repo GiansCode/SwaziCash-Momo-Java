@@ -32,20 +32,27 @@ public final class RestClient implements IRestClient {
     }
 
     @Override
-    public final HttpResponse post(String path, Map<String, String> headers, String body) throws URISyntaxException, IOException {
+    public final HttpResponse post(String path, Map<String, String> headers, Map<String,String> parameters, String body) throws URISyntaxException, IOException {
+        if (parameters != null) {
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                path = path.replaceAll("{"+entry.getKey()+"}", entry.getValue());
+            }
+        }
         URI uri = getUri(path);
         HttpPost request = new HttpPost(uri);
         if (body != null) {
             request.setEntity(new StringEntity(body));
         }
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            request.setHeader(entry.getKey(), entry.getValue());
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                request.setHeader(entry.getKey(), entry.getValue());
+            }
         }
         return client.execute(request);
     }
 
     @Override
-    public final HttpResponse get(String path, Map<String, String> headers) throws URISyntaxException, IOException {
+    public final HttpResponse get(String path, Map<String, String> headers, Map<String,String> parameters) throws URISyntaxException, IOException {
         URI uri = getUri(path);
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : headers.entrySet()) {

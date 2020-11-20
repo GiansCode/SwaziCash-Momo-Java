@@ -2,7 +2,7 @@ package cash.swazi.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AccessToken {
+public final class AccessToken {
     @SerializedName("access_token")
     private final String token;
 

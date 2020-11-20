@@ -8,10 +8,5 @@ public class Headers {
     public static final String REFERENCE_ID = "X-Reference-Id";
     public static final String TARGET_ENVIRONMENT = "X-Target-Environment";
 
-
-
-
-
-
     private Headers() {}
 }

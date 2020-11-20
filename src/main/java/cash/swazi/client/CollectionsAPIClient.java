@@ -3,6 +3,7 @@ package cash.swazi.client;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
 import cash.swazi.model.PaymentRequest;
+import cash.swazi.model.transactioninfo.TransactionInformation;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CollectionsAPIClient extends BasicAPIClient {
+public final class CollectionsAPIClient extends BasicAPIClient {
     private final Gson gson = new Gson();
     public CollectionsAPIClient(Options options) {
         super(options);
@@ -31,7 +32,10 @@ public class CollectionsAPIClient extends BasicAPIClient {
         headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
 
         try {
-            HttpResponse response = getRestClient().post("token", headers, null);
+            HttpResponse response = getRestClient().post("token", headers, null, null);
+            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+                return null;
+            }
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outputStream);
             return gson.fromJson(outputStream.toString(),AccessToken.class);
@@ -56,7 +60,10 @@ public class CollectionsAPIClient extends BasicAPIClient {
         String body = gson.toJson(request);
 
         try {
-            HttpResponse response = getRestClient().post("requesttopay", headers, body);
+            HttpResponse response = getRestClient().post("requesttopay", headers, null, body);
+            if (response.getStatusLine().getStatusCode() != 202) {
+                return null;
+            }
             return PaymentRequestResponse.getResponseFor(response.getStatusLine().getStatusCode());
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
@@ -64,6 +71,36 @@ public class CollectionsAPIClient extends BasicAPIClient {
         }
         return null;
     }
+
+
+    public TransactionInformation getTransactionInformation(UUID transactionId, String targetEnvironment) throws IOException {
+        Options options = getOptions();
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
+        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
+        headers.put(Headers.TARGET_ENVIRONMENT, targetEnvironment);
+
+        Map<String,String> parameters = new HashMap<>();
+        parameters.put("referenceId", transactionId.toString());
+
+
+        try {
+            HttpResponse response = getRestClient().post("requesttopay/{referenceId}", headers, parameters, null);
+            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+                return null;
+            }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outputStream);
+            return gson.fromJson(outputStream.toString(),TransactionInformation.class);
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid baseURI or request path changed!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public enum PaymentRequestResponse {
         ACCEPTED(202),
         BAD_REQUEST(400),
