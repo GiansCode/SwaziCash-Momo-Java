@@ -35,10 +35,12 @@ public final class RestClient implements IRestClient {
     public final HttpResponse post(String path, Map<String, String> headers, String body) throws URISyntaxException, IOException {
         URI uri = getUri(path);
         HttpPost request = new HttpPost(uri);
+        if (body != null) {
+            request.setEntity(new StringEntity(body));
+        }
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             request.setHeader(entry.getKey(), entry.getValue());
         }
-        request.setEntity(new StringEntity(body));
         return client.execute(request);
     }
 
