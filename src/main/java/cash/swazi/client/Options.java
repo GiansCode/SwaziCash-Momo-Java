@@ -16,7 +16,7 @@ public final class Options {
         this.apiSecret = apiSecret;
         this.userID = userID;
         this.baseUrl = baseUrl;
-        this.authorization = AuthUtils.encodeBasicAuthentication(getUserID(), getPrimaryKey());
+        this.authorization = AuthUtils.encodeBasicAuthentication(getUserID(), getApiSecret());
     }
 
     public String getPrimaryKey() {
