@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 public interface CollectionsAPI {
-    CollectionsAPIClient.PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, String targetEnvironment, PaymentRequest request) throws IOException;
+    CollectionsAPIClient.PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException;
     AccessToken getToken() throws IOException;
-    TransactionInformation getTransactionInformation(UUID transactionId, String targetEnvironment) throws IOException;
+    TransactionInformation getTransactionInformation(UUID transactionId) throws IOException;
 
 }

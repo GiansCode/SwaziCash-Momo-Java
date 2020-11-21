@@ -3,10 +3,12 @@ package cash.swazi.client;
 import cash.swazi.api.CollectionsAPI;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
+import cash.swazi.model.Balance;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
+import org.intellij.lang.annotations.MagicConstant;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,15 +27,14 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         super(options, client);
     }
 
-    public PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, String targetEnvironment, PaymentRequest request) throws IOException {
-        Options options = getOptions();
-
-        Map<String,String> headers = new HashMap<>();
-        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
-        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
+    public PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException {
+        Map<String,String> headers = getOptions().generateHeader(
+                Headers.AUTHORIZATION,
+                Headers.SUBSCRIPTION_KEY,
+                Headers.TARGET_ENVIRONMENT
+        );
         headers.put(Headers.CALLBACK_URL, callbackUrl);
         headers.put(Headers.REFERENCE_ID, referenceId.toString());
-        headers.put(Headers.TARGET_ENVIRONMENT, targetEnvironment);
 
         String body = gson.toJson(request);
 
@@ -51,11 +52,10 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
     }
 
     public AccessToken getToken() throws IOException {
-        Options options = getOptions();
-
-        Map<String,String> headers = new HashMap<>();
-        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
-        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
+        Map<String,String> headers = getOptions().generateHeader(
+                Headers.AUTHORIZATION,
+                Headers.SUBSCRIPTION_KEY
+        );
 
         try {
             HttpResponse response = getRestClient().post("token", headers, null, null);
@@ -73,26 +73,74 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         return null;
     }
 
-    public TransactionInformation getTransactionInformation(UUID transactionId, String targetEnvironment) throws IOException {
-        Options options = getOptions();
-
-        Map<String,String> headers = new HashMap<>();
-        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
-        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
-        headers.put(Headers.TARGET_ENVIRONMENT, targetEnvironment);
+    public TransactionInformation getTransactionInformation(UUID transactionId) throws IOException {
+        Map<String,String> headers = getOptions().generateHeader(
+                Headers.AUTHORIZATION,
+                Headers.SUBSCRIPTION_KEY,
+                Headers.TARGET_ENVIRONMENT
+        );
 
         Map<String,String> parameters = new HashMap<>();
         parameters.put("referenceId", transactionId.toString());
 
 
         try {
-            HttpResponse response = getRestClient().post("requesttopay/{referenceId}", headers, parameters, null);
+            HttpResponse response = getRestClient().get("requesttopay/{referenceId}", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outputStream);
             return gson.fromJson(outputStream.toString(),TransactionInformation.class);
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid baseURI or request path changed!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Balance getBalance() throws IOException {
+        Map<String,String> headers = getOptions().generateHeader(
+                Headers.AUTHORIZATION,
+                Headers.SUBSCRIPTION_KEY,
+                Headers.TARGET_ENVIRONMENT
+        );
+
+
+        try {
+            HttpResponse response = getRestClient().get("v1_0/account/balance", headers, null);
+            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+                return null;
+            }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outputStream);
+            return gson.fromJson(outputStream.toString(), Balance.class);
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid baseURI or request path changed!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException {
+        Map<String,String> headers = getOptions().generateHeader(
+                Headers.AUTHORIZATION,
+                Headers.SUBSCRIPTION_KEY,
+                Headers.TARGET_ENVIRONMENT
+        );
+
+        Map<String,String> parameters = new HashMap<>();
+        parameters.put("accountHolderIdType", accountHolderIdType.toString());
+        parameters.put("accountHolderId", accountHolderId);
+        try {
+            HttpResponse response = getRestClient().get("/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", parameters, null);
+            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+                return null;
+            }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outputStream);
+            return gson.fromJson(outputStream.toString(), Boolean.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -124,6 +172,15 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
                 }
             }
             return null;
+        }
+    }
+
+    public enum AccountHolderIdType {
+        MSISDN, EMAIL, PARTY_CODE;
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
         }
     }
 }
