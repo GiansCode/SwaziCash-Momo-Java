@@ -1,4 +1,4 @@
-package cash.swazi.model.transactioninfo;
+package cash.swazi.model.transaction;
 
 import cash.swazi.model.Payer;
 

@@ -1,4 +1,4 @@
-package cash.swazi.model.transactioninfo;
+package cash.swazi.model.transaction;
 
 public class TransactionFailReason {
     private final Code code;

@@ -3,7 +3,7 @@ package cash.swazi.client;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
 import cash.swazi.model.PaymentRequest;
-import cash.swazi.model.transactioninfo.TransactionInformation;
+import cash.swazi.model.transaction.TransactionInformation;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 
@@ -22,29 +22,6 @@ public final class CollectionsAPIClient extends BasicAPIClient {
 
     public CollectionsAPIClient(Options options, IRestClient client) {
         super(options, client);
-    }
-
-    public AccessToken getToken() throws IOException {
-        Options options = getOptions();
-
-        Map<String,String> headers = new HashMap<>();
-        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
-        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
-
-        try {
-            HttpResponse response = getRestClient().post("token", headers, null, null);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
-                return null;
-            }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return gson.fromJson(outputStream.toString(),AccessToken.class);
-        } catch (URISyntaxException e) {
-            System.err.println("Invalid baseURI or request path changed!");
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, String targetEnvironment, PaymentRequest request) throws IOException {
@@ -72,6 +49,28 @@ public final class CollectionsAPIClient extends BasicAPIClient {
         return null;
     }
 
+    public AccessToken getToken() throws IOException {
+        Options options = getOptions();
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(Headers.AUTHORIZATION, options.getAuthorization());
+        headers.put(Headers.SUBSCRIPTION_KEY, options.getSubscriptionKey());
+
+        try {
+            HttpResponse response = getRestClient().post("token", headers, null, null);
+            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+                return null;
+            }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outputStream);
+            return gson.fromJson(outputStream.toString(),AccessToken.class);
+        } catch (URISyntaxException e) {
+            System.err.println("Invalid baseURI or request path changed!");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public TransactionInformation getTransactionInformation(UUID transactionId, String targetEnvironment) throws IOException {
         Options options = getOptions();
