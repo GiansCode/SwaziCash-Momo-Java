@@ -1,5 +1,6 @@
 package cash.swazi.client;
 
+import cash.swazi.api.CollectionsAPI;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
 import cash.swazi.model.PaymentRequest;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class CollectionsAPIClient extends BasicAPIClient {
+public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI {
     private final Gson gson = new Gson();
     public CollectionsAPIClient(Options options) {
         super(options);
