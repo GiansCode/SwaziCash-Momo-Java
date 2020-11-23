@@ -7,6 +7,7 @@ import cash.swazi.model.AccessToken;
 import cash.swazi.model.Balance;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
+import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.intellij.lang.annotations.MagicConstant;
@@ -66,9 +67,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return gson.fromJson(outputStream.toString(),TransactionInformation.class);
+            String responseBody = ResponseUtils.getResponseBody(response);
+            return gson.fromJson(responseBody,TransactionInformation.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -88,9 +88,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return gson.fromJson(outputStream.toString(), Balance.class);
+            String responseBody = ResponseUtils.getResponseBody(response);
+            return gson.fromJson(responseBody, Balance.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -114,9 +113,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return gson.fromJson(outputStream.toString(), Boolean.class);
+            String responseBody = ResponseUtils.getResponseBody(response);
+            return gson.fromJson(responseBody, Boolean.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -135,9 +133,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return gson.fromJson(outputStream.toString(),AccessToken.class);
+            String responseBody = ResponseUtils.getResponseBody(response);
+            return gson.fromJson(responseBody, AccessToken.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
