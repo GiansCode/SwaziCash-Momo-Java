@@ -2,6 +2,8 @@ package cash.swazi.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.Instant;
+
 public final class AccessToken {
     @SerializedName("access_token")
     private final String token;
@@ -10,12 +12,15 @@ public final class AccessToken {
     private final String type;
 
     @SerializedName("expires_in")
-    private final int expiryTime;
+    private final int expiresIn;
+
+    private transient final long endTime;
 
     public AccessToken(String token, String type, int expiryTime) {
         this.token = token;
         this.type = type;
-        this.expiryTime = expiryTime;
+        this.expiresIn = expiryTime;
+        this.endTime = System.currentTimeMillis() + expiresIn * 1000;
     }
 
     public String getToken() {
@@ -26,7 +31,15 @@ public final class AccessToken {
         return type;
     }
 
-    public int getExpiryTime() {
-        return expiryTime;
+    public int getTimeToExpire() {
+        return expiresIn;
+    }
+
+    public long getTimeLeftToExpiry() {
+        return  (endTime - System.currentTimeMillis())/1000;
+    }
+
+    public boolean hasExpired() {
+        return getTimeLeftToExpiry() <= 0;
     }
 }

@@ -6,45 +6,45 @@ import org.intellij.lang.annotations.MagicConstant;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public final class Options {
-    private final String primaryKey;
     private final String subscriptionKey;
-    private final String userID;
+    private final String apiKey;
+    private final UUID userID;
     private final String baseUrl;
-    private final String authorization;
+    private final String basicAuthorization;
     private final String targetEnvironment;
     private final String currency;
     private final Map<String,String> basicHeaders = new HashMap<>();
 
 
-    public Options(String primaryKey, String apiSecret, String userID, String baseUrl, String targetEnvironment, String currency) {
-        this.primaryKey = primaryKey;
-        this.subscriptionKey = apiSecret;
+    public Options(String primaryKey, String subscriptionKey, UUID userID, String baseUrl, String targetEnvironment, String currency) {
+        this.subscriptionKey = primaryKey;
+        this.apiKey = subscriptionKey;
         this.userID = userID;
         this.baseUrl = baseUrl;
-        this.authorization = AuthUtils.encodeBasicAuthentication(getUserID(), getSubscriptionKey());
+        this.basicAuthorization = AuthUtils.encodeBasicAuthentication(getUserID().toString(), getApiKey());
         this.targetEnvironment = targetEnvironment;
         this.currency = currency;
-
         prepareBasicHeaders();
     }
 
     private void prepareBasicHeaders() {
-        basicHeaders.put(Headers.AUTHORIZATION, getAuthorization());
-        basicHeaders.put(Headers.SUBSCRIPTION_KEY, getSubscriptionKey());
+        basicHeaders.put(Headers.AUTHORIZATION, getBasicAuthorization());
+        basicHeaders.put(Headers.SUBSCRIPTION_KEY, getApiKey());
         basicHeaders.put(Headers.TARGET_ENVIRONMENT, getTargetEnvironment());
-    }
-
-    public String getPrimaryKey() {
-        return primaryKey;
     }
 
     public String getSubscriptionKey() {
         return subscriptionKey;
     }
 
-    public String getUserID() {
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public UUID getUserID() {
         return userID;
     }
 
@@ -52,8 +52,8 @@ public final class Options {
         return baseUrl;
     }
 
-    public String getAuthorization() {
-        return authorization;
+    public String getBasicAuthorization() {
+        return basicAuthorization;
     }
 
     public String getTargetEnvironment() {

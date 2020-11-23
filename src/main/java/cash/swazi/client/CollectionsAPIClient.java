@@ -133,6 +133,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         Map<String,String> parameters = new HashMap<>();
         parameters.put("accountHolderIdType", accountHolderIdType.toString());
         parameters.put("accountHolderId", accountHolderId);
+
         try {
             HttpResponse response = getRestClient().get("/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", parameters, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
