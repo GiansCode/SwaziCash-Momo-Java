@@ -11,7 +11,7 @@ import java.util.UUID;
 public final class Options {
     private final String subscriptionKey;
     private final String apiKey;
-    private final UUID userID;
+    private final UUID userId;
     private final String baseUrl;
     private final String basicAuthorization;
     private final String targetEnvironment;
@@ -19,12 +19,12 @@ public final class Options {
     private final Map<String,String> basicHeaders = new HashMap<>();
 
 
-    public Options(String primaryKey, String subscriptionKey, UUID userID, String baseUrl, String targetEnvironment, String currency) {
-        this.subscriptionKey = primaryKey;
-        this.apiKey = subscriptionKey;
-        this.userID = userID;
+    public Options(String subscriptionKey, String apiKey, UUID userId, String baseUrl, String targetEnvironment, String currency) {
+        this.subscriptionKey = subscriptionKey;
+        this.apiKey = apiKey;
+        this.userId = userId;
         this.baseUrl = baseUrl;
-        this.basicAuthorization = AuthUtils.encodeBasicAuthentication(getUserID().toString(), getApiKey());
+        this.basicAuthorization = AuthUtils.encodeBasicAuthentication(getUserId().toString(), getApiKey());
         this.targetEnvironment = targetEnvironment;
         this.currency = currency;
         prepareBasicHeaders();
@@ -44,8 +44,8 @@ public final class Options {
         return apiKey;
     }
 
-    public UUID getUserID() {
-        return userID;
+    public UUID getUserId() {
+        return userId;
     }
 
     public String getBaseUrl() {

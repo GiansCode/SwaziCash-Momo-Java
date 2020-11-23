@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.time.Instant;
 
 public final class AccessToken {
+
     @SerializedName("access_token")
     private final String token;
 
