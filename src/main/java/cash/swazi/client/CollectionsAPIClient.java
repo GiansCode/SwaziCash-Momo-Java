@@ -7,6 +7,7 @@ import cash.swazi.model.AccessToken;
 import cash.swazi.model.Balance;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
+import cash.swazi.util.AuthUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -34,6 +35,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
         );
+        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
         headers.put(Headers.CALLBACK_URL, callbackUrl);
         headers.put(Headers.REFERENCE_ID, referenceId.toString());
 
@@ -57,7 +59,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
         );
-
+        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
         Map<String,String> parameters = new HashMap<>();
         parameters.put("referenceId", transactionId.toString());
 
@@ -81,7 +83,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
         );
-
+        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
 
         try {
             HttpResponse response = getRestClient().get("v1_0/account/balance", headers, null);
@@ -103,7 +105,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
         );
-
+        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
         Map<String,String> parameters = new HashMap<>();
         parameters.put("accountHolderIdType", accountHolderIdType.toString());
         parameters.put("accountHolderId", accountHolderId);
