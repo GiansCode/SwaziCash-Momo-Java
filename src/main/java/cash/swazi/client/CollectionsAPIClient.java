@@ -4,7 +4,7 @@ import cash.swazi.api.CollectionsAPI;
 import cash.swazi.api.TokenProviding;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
-import cash.swazi.model.AccessTokenDeserializaer;
+import cash.swazi.model.AccessTokenDeserializer;
 import cash.swazi.model.Balance;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
@@ -12,12 +12,8 @@ import cash.swazi.util.AuthUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
-import org.intellij.lang.annotations.MagicConstant;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -25,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI, TokenProviding {
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializaer()).create();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create();
     public CollectionsAPIClient(Options options) {
         super(options);
     }
@@ -90,7 +86,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
 
         try {
-            HttpResponse response = getRestClient().get(true, "v1_0/account/balance", headers, null);
+            HttpResponse response = getRestClient().get(true, "collection/v1_0/account/balance", headers, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }

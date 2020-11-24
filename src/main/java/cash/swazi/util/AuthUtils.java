@@ -12,6 +12,6 @@ public final class AuthUtils {
         return String.format(BASIC_FORMAT, Base64.encodeBase64String(formattedInput));
     }
     public static String encodeBearerAuthentication(AccessToken token) {
-        return String.format(BASIC_FORMAT, token.getToken());
+        return String.format(BEARER_FORMAT, token.getToken());
     }
 }
