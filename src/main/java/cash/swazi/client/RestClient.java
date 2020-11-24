@@ -1,6 +1,7 @@
 package cash.swazi.client;
 
 
+import cash.swazi.model.AccessToken;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -32,13 +33,13 @@ public final class RestClient implements IRestClient {
     }
 
     @Override
-    public final HttpResponse post(String path, Map<String, String> headers, Map<String,String> parameters, String body) throws URISyntaxException, IOException {
+    public final HttpResponse post(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters, String body) throws URISyntaxException, IOException {
         if (parameters != null) {
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
                 path = path.replaceAll("{"+entry.getKey()+"}", entry.getValue());
             }
         }
-        URI uri = getUri(path);
+        URI uri = getUri(useBase, path);
         HttpPost request = new HttpPost(uri);
         if (body != null) {
             request.setEntity(new StringEntity(body));
@@ -52,8 +53,8 @@ public final class RestClient implements IRestClient {
     }
 
     @Override
-    public final HttpResponse get(String path, Map<String, String> headers, Map<String,String> parameters) throws URISyntaxException, IOException {
-        URI uri = getUri(path);
+    public final HttpResponse get(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters) throws URISyntaxException, IOException {
+        URI uri = getUri(useBase, path);
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             request.setHeader(entry.getKey(), entry.getValue());
@@ -61,7 +62,12 @@ public final class RestClient implements IRestClient {
         return client.execute(request);
     }
 
-    private URI getUri(String path) throws URISyntaxException {
-        return new URIBuilder(baseUrl).setPath(path).build();
+    private URI getUri(boolean withBase, String path) throws URISyntaxException {
+        if (withBase) {
+            return new URIBuilder(baseUrl).setPath(path).build();
+        } else {
+
+            return new URIBuilder(path).build();
+        }
     }
 }

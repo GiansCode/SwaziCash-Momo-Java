@@ -22,7 +22,7 @@ public class RestClientTest extends TestCase {
     public void testPostRequest() throws IOException, URISyntaxException {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        HttpResponse response = client.post("post", headers,null, POST_TEST_BODY);
+        HttpResponse response = client.post(true,"post", headers,null, POST_TEST_BODY);
         assertEquals("Request failed!",200, response.getStatusLine().getStatusCode());
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -38,7 +38,7 @@ public class RestClientTest extends TestCase {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("test-header", GET_TEST_HEADER_VALUE);
-        HttpResponse response = client.get("get", headers, null);
+        HttpResponse response = client.get(true, "get", headers, null);
         assertEquals("Request failed!",200, response.getStatusLine().getStatusCode());
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {

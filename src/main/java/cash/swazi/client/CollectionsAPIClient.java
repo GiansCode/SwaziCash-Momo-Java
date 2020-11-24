@@ -4,12 +4,16 @@ import cash.swazi.api.CollectionsAPI;
 import cash.swazi.api.TokenProviding;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
+import cash.swazi.model.AccessTokenDeserializaer;
 import cash.swazi.model.Balance;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import cash.swazi.util.AuthUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 import org.intellij.lang.annotations.MagicConstant;
 
@@ -21,7 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI, TokenProviding {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializaer()).create();
     public CollectionsAPIClient(Options options) {
         super(options);
     }
@@ -42,7 +46,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         String body = gson.toJson(request);
 
         try {
-            HttpResponse response = getRestClient().post("requesttopay", headers, null, body);
+            HttpResponse response = getRestClient().post(true, "requesttopay", headers, null, body);
             if (response.getStatusLine().getStatusCode() != 202) {
                 return null;
             }
@@ -65,7 +69,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
 
 
         try {
-            HttpResponse response = getRestClient().get("requesttopay/{referenceId}", headers, parameters);
+            HttpResponse response = getRestClient().get(true, "requesttopay/{referenceId}", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
@@ -86,7 +90,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
 
         try {
-            HttpResponse response = getRestClient().get("v1_0/account/balance", headers, null);
+            HttpResponse response = getRestClient().get(true, "v1_0/account/balance", headers, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
@@ -111,7 +115,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         parameters.put("accountHolderId", accountHolderId);
 
         try {
-            HttpResponse response = getRestClient().get("/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", parameters, null);
+            HttpResponse response = getRestClient().get(true, "/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", parameters, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
@@ -131,7 +135,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         );
 
         try {
-            HttpResponse response = getRestClient().post("token", headers, null, null);
+            HttpResponse response = getRestClient().post(true, "collection/token/", headers, null, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }

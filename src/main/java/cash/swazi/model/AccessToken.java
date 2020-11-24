@@ -1,7 +1,9 @@
 package cash.swazi.model;
 
+import com.google.gson.InstanceCreator;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Type;
 import java.time.Instant;
 
 public final class AccessToken {

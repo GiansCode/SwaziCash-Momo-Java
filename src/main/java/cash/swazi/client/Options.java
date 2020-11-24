@@ -32,7 +32,7 @@ public final class Options {
 
     private void prepareBasicHeaders() {
         basicHeaders.put(Headers.AUTHORIZATION, getBasicAuthorization());
-        basicHeaders.put(Headers.SUBSCRIPTION_KEY, getApiKey());
+        basicHeaders.put(Headers.SUBSCRIPTION_KEY, getSubscriptionKey());
         basicHeaders.put(Headers.TARGET_ENVIRONMENT, getTargetEnvironment());
     }
 
@@ -69,6 +69,7 @@ public final class Options {
         for (String key: headerKeys) {
             header.put(key, basicHeaders.get(key));
         }
+        header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
         return header;
     }
 }
