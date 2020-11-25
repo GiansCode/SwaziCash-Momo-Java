@@ -46,6 +46,7 @@ public final class RestClient implements IRestClient {
         }
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
+                if (entry.getValue() == null) continue;
                 request.setHeader(entry.getKey(), entry.getValue());
             }
         }
@@ -57,6 +58,7 @@ public final class RestClient implements IRestClient {
         URI uri = getUri(useBase, path);
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
+            if (entry.getValue() == null) continue;
             request.setHeader(entry.getKey(), entry.getValue());
         }
         return client.execute(request);

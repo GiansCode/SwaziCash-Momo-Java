@@ -4,6 +4,7 @@ import cash.swazi.model.AccessToken;
 import cash.swazi.model.Balance;
 import cash.swazi.model.Payer;
 import cash.swazi.model.PaymentRequest;
+import cash.swazi.model.transaction.TransactionInformation;
 import junit.framework.TestCase;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class CollectionsAPIClientTest extends TestCase {
             "sandbox",
             "EUR"
     );
+    private final UUID transactionUUID = UUID.randomUUID();
     private final CollectionsAPIClient client = new CollectionsAPIClient(options);
 
     public void testGetAccessToken() throws IOException {
@@ -27,24 +29,27 @@ public class CollectionsAPIClientTest extends TestCase {
 
     public void testRequestPayment() throws IOException {
         AccessToken token = client.getToken();
-        UUID paymentId = UUID.randomUUID();
         PaymentRequest request = new PaymentRequest(
                 100,
                 "EUR",
-                "TestID",
+                "45645",
                 new Payer(
-                        "EMAIL",
-                        "testtest@gmail.com"
+                        Payer.PartyIdType.MSISDN,
+                        "918369110173"
                 ),
                 "tester",
                 "testee"
         );
-        CollectionsAPIClient.PaymentRequestResponse response = client.requestPayment(token, paymentId, null, request);
+        CollectionsAPIClient.PaymentRequestResponse response = client.requestPayment(token, transactionUUID, null, request);
         assert response != null;
     }
 
-    public void testGetTransactionInformation() {
-
+    public void testGetTransactionInformation() throws IOException {
+        testRequestPayment(); // Pre-requisite
+        AccessToken token = client.getToken();
+        UUID paymentId = UUID.randomUUID();
+        TransactionInformation info = client.getTransactionInformation(token, transactionUUID);
+        assert info != null;
     }
 
     public void testGetBalance() throws IOException {

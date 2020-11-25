@@ -1,19 +1,25 @@
 package cash.swazi.model;
 
 public class Payer {
-    private final String partyIdType;
+    private final PartyIdType partyIdType;
     private final String partyId;
 
-    public Payer(String partyIdType, String partyId) {
+    public Payer(PartyIdType partyIdType, String partyId) {
         this.partyIdType = partyIdType;
         this.partyId = partyId;
     }
 
-    public String getPartyIdType() {
+    public PartyIdType getPartyIdType() {
         return partyIdType;
     }
 
     public String getPartyId() {
         return partyId;
+    }
+
+    public enum PartyIdType {
+        MSISDN,
+        EMAIL,
+        PARTY_CODE
     }
 }

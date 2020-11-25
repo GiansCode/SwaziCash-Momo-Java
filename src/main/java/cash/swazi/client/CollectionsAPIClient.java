@@ -42,7 +42,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         String body = gson.toJson(request);
 
         try {
-            HttpResponse response = getRestClient().post(true, "requesttopay", headers, null, body);
+            HttpResponse response = getRestClient().post(true, "collection/v1_0/requesttopay", headers, null, body);
             if (response.getStatusLine().getStatusCode() != 202) {
                 return null;
             }
