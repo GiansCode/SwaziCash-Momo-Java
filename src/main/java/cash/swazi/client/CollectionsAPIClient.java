@@ -12,6 +12,7 @@ import cash.swazi.util.AuthUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
@@ -111,12 +112,12 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         parameters.put("accountHolderId", accountHolderId);
 
         try {
-            HttpResponse response = getRestClient().get(true, "/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", parameters, null);
+            HttpResponse response = getRestClient().get(true, "collection/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }
             String responseBody = ResponseUtils.getResponseBody(response);
-            return gson.fromJson(responseBody, Boolean.class);
+            return gson.fromJson(responseBody, JsonObject.class).get("result").getAsBoolean();
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();

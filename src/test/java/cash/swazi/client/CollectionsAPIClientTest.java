@@ -57,9 +57,9 @@ public class CollectionsAPIClientTest extends TestCase {
         assert balance != null;
     }
 
-    public void testIsAccountActive() {
-    }
-
-    public void testGetToken() {
+    public void testIsAccountActive() throws IOException {
+        AccessToken token = client.getToken();
+        Boolean result = client.isAccountActive(token, CollectionsAPIClient.AccountHolderIdType.MSISDN, "123456");
+        assert result != null;
     }
 }
