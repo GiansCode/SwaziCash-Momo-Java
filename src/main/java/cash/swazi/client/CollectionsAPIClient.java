@@ -65,7 +65,7 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
 
 
         try {
-            HttpResponse response = getRestClient().get(true, "requesttopay/{referenceId}", headers, parameters);
+            HttpResponse response = getRestClient().get(true, "collection/v1_0/requesttopay/{referenceId}", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 return null;
             }

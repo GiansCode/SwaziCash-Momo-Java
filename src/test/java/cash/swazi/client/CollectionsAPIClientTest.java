@@ -47,7 +47,6 @@ public class CollectionsAPIClientTest extends TestCase {
     public void testGetTransactionInformation() throws IOException {
         testRequestPayment(); // Pre-requisite
         AccessToken token = client.getToken();
-        UUID paymentId = UUID.randomUUID();
         TransactionInformation info = client.getTransactionInformation(token, transactionUUID);
         assert info != null;
     }

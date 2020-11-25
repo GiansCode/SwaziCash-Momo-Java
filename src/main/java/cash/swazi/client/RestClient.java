@@ -34,12 +34,7 @@ public final class RestClient implements IRestClient {
 
     @Override
     public final HttpResponse post(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters, String body) throws URISyntaxException, IOException {
-        if (parameters != null) {
-            for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                path = path.replaceAll("{"+entry.getKey()+"}", entry.getValue());
-            }
-        }
-        URI uri = getUri(useBase, path);
+        URI uri = getUri(useBase, parseParameters(path, parameters));
         HttpPost request = new HttpPost(uri);
         if (body != null) {
             request.setEntity(new StringEntity(body));
@@ -55,7 +50,7 @@ public final class RestClient implements IRestClient {
 
     @Override
     public final HttpResponse get(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters) throws URISyntaxException, IOException {
-        URI uri = getUri(useBase, path);
+        URI uri = getUri(useBase, parseParameters(path, parameters));
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             if (entry.getValue() == null) continue;
@@ -71,5 +66,14 @@ public final class RestClient implements IRestClient {
 
             return new URIBuilder(path).build();
         }
+    }
+
+    private String parseParameters(String path, Map<String, String> parameters) {
+        if (parameters != null) {
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                path = path.replace("{"+entry.getKey()+"}", entry.getValue());
+            }
+        }
+        return path;
     }
 }
