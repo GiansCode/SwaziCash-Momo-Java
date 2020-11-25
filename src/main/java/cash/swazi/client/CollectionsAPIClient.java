@@ -1,7 +1,7 @@
 package cash.swazi.client;
 
 import cash.swazi.api.CollectionsAPI;
-import cash.swazi.api.TokenProviding;
+import cash.swazi.api.TokenProvider;
 import cash.swazi.constants.Headers;
 import cash.swazi.model.AccessToken;
 import cash.swazi.model.AccessTokenDeserializer;
@@ -21,17 +21,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI, TokenProviding {
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create();
+public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI {
+    private final Gson gson = new Gson();
+    private final TokenProvider tokenProvider;
+
     public CollectionsAPIClient(Options options) {
+        this(options, new AuthenticationClient(options, "collection/token/"));
+    }
+
+    public CollectionsAPIClient(Options options, TokenProvider tokenProvider) {
         super(options);
+        this.tokenProvider = tokenProvider;
     }
 
-    public CollectionsAPIClient(Options options, IRestClient client) {
+    public CollectionsAPIClient(Options options, IRestClient client, TokenProvider tokenProvider) {
         super(options, client);
+        this.tokenProvider = tokenProvider;
     }
 
-    public PaymentRequestResponse requestPayment(AccessToken token, UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException {
+    public PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException {
+        AccessToken token = tokenProvider.getToken();
         Map<String,String> headers = getOptions().generateHeader(
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
@@ -55,7 +64,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         return null;
     }
 
-    public TransactionInformation getTransactionInformation(AccessToken token, UUID transactionId) throws IOException {
+    public TransactionInformation getTransactionInformation(UUID transactionId) throws IOException {
+        AccessToken token = tokenProvider.getToken();
         Map<String,String> headers = getOptions().generateHeader(
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
@@ -79,7 +89,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         return null;
     }
 
-    public Balance getBalance(AccessToken token) throws IOException {
+    public Balance getBalance() throws IOException {
+        AccessToken token = tokenProvider.getToken();
         Map<String,String> headers = getOptions().generateHeader(
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
@@ -101,7 +112,8 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
     }
 
 
-    public Boolean isAccountActive(AccessToken token, AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException {
+    public Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException {
+        AccessToken token = tokenProvider.getToken();
         Map<String,String> headers = getOptions().generateHeader(
                 Headers.SUBSCRIPTION_KEY,
                 Headers.TARGET_ENVIRONMENT
@@ -125,26 +137,9 @@ public final class CollectionsAPIClient extends BasicAPIClient implements Collec
         return null;
     }
 
-    public AccessToken getToken() throws IOException {
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.AUTHORIZATION,
-                Headers.SUBSCRIPTION_KEY
-        );
-
-        try {
-            HttpResponse response = getRestClient().post(true, "collection/token/", headers, null, null);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
-                return null;
-            }
-            String responseBody = ResponseUtils.getResponseBody(response);
-            return gson.fromJson(responseBody, AccessToken.class);
-        } catch (URISyntaxException e) {
-            System.err.println("Invalid baseURI or request path changed!");
-            e.printStackTrace();
-        }
-        return null;
+    public TokenProvider getTokenProvider() {
+        return tokenProvider;
     }
-
 
     public enum PaymentRequestResponse {
         ACCEPTED(202),

@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 public interface CollectionsAPI {
-    CollectionsAPIClient.PaymentRequestResponse requestPayment(AccessToken token, UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException;
-    TransactionInformation getTransactionInformation(AccessToken token, UUID transactionId) throws IOException;
-    Boolean isAccountActive(AccessToken token, CollectionsAPIClient.AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException;
-    Balance getBalance(AccessToken token) throws IOException;
+    CollectionsAPIClient.PaymentRequestResponse requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException;
+    TransactionInformation getTransactionInformation(UUID transactionId) throws IOException;
+    Boolean isAccountActive(CollectionsAPIClient.AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException;
+    Balance getBalance() throws IOException;
 }

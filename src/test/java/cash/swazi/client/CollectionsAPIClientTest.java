@@ -23,12 +23,10 @@ public class CollectionsAPIClientTest extends TestCase {
     private final CollectionsAPIClient client = new CollectionsAPIClient(options);
 
     public void testGetAccessToken() throws IOException {
-        AccessToken token = client.getToken();
-        assert token != null;
+        assert client.getTokenProvider().getToken() != null;
     }
 
     public void testRequestPayment() throws IOException {
-        AccessToken token = client.getToken();
         PaymentRequest request = new PaymentRequest(
                 100,
                 "EUR",
@@ -40,26 +38,23 @@ public class CollectionsAPIClientTest extends TestCase {
                 "tester",
                 "testee"
         );
-        CollectionsAPIClient.PaymentRequestResponse response = client.requestPayment(token, transactionUUID, null, request);
+        CollectionsAPIClient.PaymentRequestResponse response = client.requestPayment(transactionUUID, null, request);
         assert response != null;
     }
 
     public void testGetTransactionInformation() throws IOException {
         testRequestPayment(); // Pre-requisite
-        AccessToken token = client.getToken();
-        TransactionInformation info = client.getTransactionInformation(token, transactionUUID);
+        TransactionInformation info = client.getTransactionInformation(transactionUUID);
         assert info != null;
     }
 
     public void testGetBalance() throws IOException {
-        AccessToken token = client.getToken();
-        Balance balance = client.getBalance(token);
+        Balance balance = client.getBalance();
         assert balance != null;
     }
 
     public void testIsAccountActive() throws IOException {
-        AccessToken token = client.getToken();
-        Boolean result = client.isAccountActive(token, CollectionsAPIClient.AccountHolderIdType.MSISDN, "123456");
+        Boolean result = client.isAccountActive(CollectionsAPIClient.AccountHolderIdType.MSISDN, "123456");
         assert result != null;
     }
 }
