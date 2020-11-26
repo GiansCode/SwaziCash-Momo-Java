@@ -1,5 +1,6 @@
 package cash.swazi.client;
 
+import cash.swazi.api.RequestFailedException;
 import cash.swazi.api.TokenProvider;
 import cash.swazi.constant.Headers;
 import cash.swazi.model.AccessToken;
@@ -29,14 +30,14 @@ public final class AuthenticationClient extends BasicAPIClient implements TokenP
     }
 
     @Override
-    public AccessToken getToken() throws IOException {
+    public AccessToken getToken() throws IOException, RequestFailedException {
         if (accessToken == null || accessToken.hasExpired()) {
             accessToken = requestNewAccessToken();
         }
         return accessToken;
     }
 
-    private AccessToken requestNewAccessToken() throws IOException {
+    private AccessToken requestNewAccessToken() throws IOException, RequestFailedException {
         Map<String,String> headers = getOptions().generateHeader(
                 Headers.AUTHORIZATION,
                 Headers.SUBSCRIPTION_KEY
@@ -45,7 +46,7 @@ public final class AuthenticationClient extends BasicAPIClient implements TokenP
         try {
             HttpResponse response = getRestClient().post(true, "collection/token/", headers, null, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
-                return null;
+                throw produceFailureException(response);
             }
             String responseBody = ResponseUtils.getResponseBody(response);
             return getGson().fromJson(responseBody, AccessToken.class);
