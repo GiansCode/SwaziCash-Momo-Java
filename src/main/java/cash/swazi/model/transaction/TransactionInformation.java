@@ -1,6 +1,6 @@
 package cash.swazi.model.transaction;
 
-import cash.swazi.model.Payer;
+import cash.swazi.model.Party;
 import org.jetbrains.annotations.Nullable;
 
 public class TransactionInformation {
@@ -8,11 +8,11 @@ public class TransactionInformation {
     private final String currency;
     private final String financialTransactionId;
     private final String externalId;
-    private final Payer payer;
+    private final Party payer;
     private final TransactionStatus status;
     private final @Nullable TransactionFailReason reason;
 
-    public TransactionInformation(double amount, String currency, String financialTransactionId, String externalId, Payer payer, TransactionStatus status, TransactionFailReason reason) {
+    public TransactionInformation(double amount, String currency, String financialTransactionId, String externalId, Party payer, TransactionStatus status, TransactionFailReason reason) {
         this.amount = amount;
         this.currency = currency;
         this.financialTransactionId = financialTransactionId;
@@ -38,7 +38,7 @@ public class TransactionInformation {
         return externalId;
     }
 
-    public Payer getPayer() {
+    public Party getPayer() {
         return payer;
     }
 

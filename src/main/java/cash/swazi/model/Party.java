@@ -1,10 +1,10 @@
 package cash.swazi.model;
 
-public class Payer {
+public class Party {
     private final PartyIdType partyIdType;
     private final String partyId;
 
-    public Payer(PartyIdType partyIdType, String partyId) {
+    public Party(PartyIdType partyIdType, String partyId) {
         this.partyIdType = partyIdType;
         this.partyId = partyId;
     }

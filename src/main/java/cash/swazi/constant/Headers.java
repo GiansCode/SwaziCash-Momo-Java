@@ -1,4 +1,4 @@
-package cash.swazi.constants;
+package cash.swazi.constant;
 
 public class Headers {
 

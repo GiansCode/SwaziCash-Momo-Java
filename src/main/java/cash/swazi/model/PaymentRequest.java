@@ -1,43 +1,14 @@
 package cash.swazi.model;
 
-public final class PaymentRequest {
-    private final String amount;
-    private final String currency;
-    private final String externalId;
-    private final Payer payer;
-    private final String payerMessage;
-    private final String payeeNote;
+public final class PaymentRequest extends Payment {
+    private final Party payer;
 
-    public PaymentRequest(double amount, String currency, String externalId, Payer payer, String payerMessage, String payeeNote) {
-        this.amount = String.valueOf(amount);
-        this.currency = currency;
-        this.externalId = externalId;
+    public PaymentRequest(double amount, String currency, String externalId, Party payer, String payerMessage, String payeeNote) {
+        super(amount, currency, externalId, payerMessage, payeeNote);
         this.payer = payer;
-        this.payerMessage = payerMessage;
-        this.payeeNote = payeeNote;
     }
 
-    public String getAmount() {
-        return amount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public String getExternalId() {
-        return externalId;
-    }
-
-    public Payer getPayer() {
+    public Party getPayer() {
         return payer;
-    }
-
-    public String getPayerMessage() {
-        return payerMessage;
-    }
-
-    public String getPayeeNote() {
-        return payeeNote;
     }
 }

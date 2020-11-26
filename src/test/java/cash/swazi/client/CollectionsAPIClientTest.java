@@ -1,8 +1,8 @@
 package cash.swazi.client;
 
-import cash.swazi.model.AccessToken;
+import cash.swazi.api.CollectionsAPI;
 import cash.swazi.model.Balance;
-import cash.swazi.model.Payer;
+import cash.swazi.model.Party;
 import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import junit.framework.TestCase;
@@ -19,8 +19,9 @@ public class CollectionsAPIClientTest extends TestCase {
             "sandbox",
             "EUR"
     );
+
     private final UUID transactionUUID = UUID.randomUUID();
-    private final CollectionsAPIClient client = new CollectionsAPIClient(options);
+    private final CollectionsAPI client = new CollectionsAPIClient(options);
 
     public void testGetAccessToken() throws IOException {
         assert client.getTokenProvider().getToken() != null;
@@ -31,15 +32,14 @@ public class CollectionsAPIClientTest extends TestCase {
                 100,
                 "EUR",
                 "45645",
-                new Payer(
-                        Payer.PartyIdType.MSISDN,
+                new Party(
+                        Party.PartyIdType.MSISDN,
                         "918369110173"
                 ),
                 "tester",
                 "testee"
         );
-        CollectionsAPIClient.PaymentRequestResponse response = client.requestPayment(transactionUUID, null, request);
-        assert response != null;
+        client.requestPayment(transactionUUID, null, request);
     }
 
     public void testGetTransactionInformation() throws IOException {

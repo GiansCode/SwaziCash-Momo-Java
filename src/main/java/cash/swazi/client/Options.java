@@ -1,6 +1,6 @@
 package cash.swazi.client;
 
-import cash.swazi.constants.Headers;
+import cash.swazi.constant.Headers;
 import cash.swazi.util.AuthUtils;
 import org.intellij.lang.annotations.MagicConstant;
 

@@ -1,7 +1,7 @@
 package cash.swazi.client;
 
 import cash.swazi.api.TokenProvider;
-import cash.swazi.constants.Headers;
+import cash.swazi.constant.Headers;
 import cash.swazi.model.AccessToken;
 import cash.swazi.model.AccessTokenDeserializer;
 import cash.swazi.util.ResponseUtils;
@@ -14,20 +14,17 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 public final class AuthenticationClient extends BasicAPIClient implements TokenProvider {
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer())
-            .create();
     private final String tokenPath;
 
     private AccessToken accessToken;
 
     public AuthenticationClient(Options options, String tokenPath) {
-        super(options);
+        super(options, new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create());
         this.tokenPath = tokenPath;
     }
 
     public AuthenticationClient(Options options, IRestClient client, String tokenPath) {
-        super(options, client);
+        super(options, client, new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create());
         this.tokenPath = tokenPath;
     }
 
@@ -51,7 +48,7 @@ public final class AuthenticationClient extends BasicAPIClient implements TokenP
                 return null;
             }
             String responseBody = ResponseUtils.getResponseBody(response);
-            return gson.fromJson(responseBody, AccessToken.class);
+            return getGson().fromJson(responseBody, AccessToken.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
