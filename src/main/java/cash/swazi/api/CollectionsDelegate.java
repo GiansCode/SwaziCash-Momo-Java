@@ -7,7 +7,7 @@ import cash.swazi.model.transaction.TransactionInformation;
 import java.io.IOException;
 import java.util.UUID;
 
-public interface CollectionsAPI {
+public interface CollectionsDelegate {
     void requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException, RequestFailedException;
     TransactionInformation getTransactionInformation(UUID transactionId) throws IOException, RequestFailedException;
     Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException, RequestFailedException;

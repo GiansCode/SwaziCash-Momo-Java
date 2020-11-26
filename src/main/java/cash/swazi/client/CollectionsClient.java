@@ -1,6 +1,6 @@
 package cash.swazi.client;
 
-import cash.swazi.api.CollectionsAPI;
+import cash.swazi.api.CollectionsDelegate;
 import cash.swazi.api.RequestFailedException;
 import cash.swazi.api.TokenProvider;
 import cash.swazi.constant.Headers;
@@ -10,7 +10,6 @@ import cash.swazi.model.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import cash.swazi.util.AuthUtils;
 import cash.swazi.util.ResponseUtils;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.http.HttpResponse;
 
@@ -20,19 +19,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class CollectionsAPIClient extends BasicAPIClient implements CollectionsAPI {
+public final class CollectionsClient extends BasicAPIClient implements CollectionsDelegate {
     private final TokenProvider tokenProvider;
 
-    public CollectionsAPIClient(Options options) {
+    public CollectionsClient(Options options) {
         this(options, new AuthenticationClient(options, "collection/token/"));
     }
 
-    public CollectionsAPIClient(Options options, TokenProvider tokenProvider) {
+    public CollectionsClient(Options options, TokenProvider tokenProvider) {
         super(options);
         this.tokenProvider = tokenProvider;
     }
 
-    public CollectionsAPIClient(Options options, IRestClient client, TokenProvider tokenProvider) {
+    public CollectionsClient(Options options, IRestClient client, TokenProvider tokenProvider) {
         super(options, client);
         this.tokenProvider = tokenProvider;
     }

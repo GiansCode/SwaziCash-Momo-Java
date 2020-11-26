@@ -1,6 +1,5 @@
 package cash.swazi.api;
 
-import cash.swazi.client.CollectionsAPIClient;
 import cash.swazi.model.AccessToken;
 
 import java.io.IOException;
