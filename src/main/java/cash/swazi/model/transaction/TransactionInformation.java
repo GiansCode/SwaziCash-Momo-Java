@@ -1,6 +1,7 @@
 package cash.swazi.model.transaction;
 
-import cash.swazi.model.Party;
+import cash.swazi.model.requests.Party;
+import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
 public class TransactionInformation {
@@ -8,16 +9,17 @@ public class TransactionInformation {
     private final String currency;
     private final String financialTransactionId;
     private final String externalId;
-    private final Party payer;
+    @SerializedName(value = "party", alternate = {"payer", "payee"})
+    private final Party party;
     private final TransactionStatus status;
     private final @Nullable TransactionFailReason reason;
 
-    public TransactionInformation(double amount, String currency, String financialTransactionId, String externalId, Party payer, TransactionStatus status, TransactionFailReason reason) {
+    public TransactionInformation(double amount, String currency, String financialTransactionId, String externalId, Party party, TransactionStatus status, TransactionFailReason reason) {
         this.amount = amount;
         this.currency = currency;
         this.financialTransactionId = financialTransactionId;
         this.externalId = externalId;
-        this.payer = payer;
+        this.party = party;
         this.status = status;
         this.reason = reason;
     }
@@ -38,8 +40,8 @@ public class TransactionInformation {
         return externalId;
     }
 
-    public Party getPayer() {
-        return payer;
+    public Party getParty() {
+        return party;
     }
 
     public TransactionFailReason getReason() {

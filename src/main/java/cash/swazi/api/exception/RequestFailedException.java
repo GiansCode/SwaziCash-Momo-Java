@@ -1,4 +1,6 @@
-package cash.swazi.api;
+package cash.swazi.api.exception;
+
+import java.util.Objects;
 
 public final class RequestFailedException extends Exception {
     private final int statusCode;
@@ -6,6 +8,7 @@ public final class RequestFailedException extends Exception {
 
 
     public RequestFailedException(int statusCode, FailReason reason) {
+        super(Objects.toString(reason));
         this.statusCode = statusCode;
         this.reason = reason;
     }
@@ -33,6 +36,14 @@ public final class RequestFailedException extends Exception {
 
         public String getMessage() {
             return message;
+        }
+
+        @Override
+        public String toString() {
+            return "FailReason{" +
+                    "code='" + code + '\'' +
+                    ", message='" + message + '\'' +
+                    '}';
         }
     }
 }

@@ -1,10 +1,9 @@
 package cash.swazi.client;
 
-import cash.swazi.api.CollectionsDelegate;
-import cash.swazi.api.RequestFailedException;
-import cash.swazi.model.Balance;
-import cash.swazi.model.Party;
-import cash.swazi.model.PaymentRequest;
+import cash.swazi.api.CollectionDelegate;
+import cash.swazi.api.exception.RequestFailedException;
+import cash.swazi.model.requests.Party;
+import cash.swazi.model.requests.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import junit.framework.TestCase;
 
@@ -22,11 +21,7 @@ public class CollectionsClientTest extends TestCase {
     );
 
     private final UUID transactionUUID = UUID.randomUUID();
-    private final CollectionsDelegate client = new CollectionsClient(options);
-
-    public void testGetAccessToken() throws IOException, RequestFailedException {
-        assert client.getTokenProvider().getToken() != null;
-    }
+    private final CollectionDelegate client = new CollectionClient(options);
 
     public void testRequestPayment() throws IOException, RequestFailedException {
         PaymentRequest request = new PaymentRequest(
@@ -47,15 +42,5 @@ public class CollectionsClientTest extends TestCase {
         testRequestPayment(); // Pre-requisite
         TransactionInformation info = client.getTransactionInformation(transactionUUID);
         assert info != null;
-    }
-
-    public void testGetBalance() throws IOException, RequestFailedException {
-        Balance balance = client.getBalance();
-        assert balance != null;
-    }
-
-    public void testIsAccountActive() throws IOException, RequestFailedException {
-        Boolean result = client.isAccountActive(CollectionsClient.AccountHolderIdType.MSISDN, "123456");
-        assert result != null;
     }
 }

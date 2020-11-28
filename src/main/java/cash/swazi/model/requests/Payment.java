@@ -1,4 +1,4 @@
-package cash.swazi.model;
+package cash.swazi.model.requests;
 
 public abstract class Payment {
     private final String amount;

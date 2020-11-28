@@ -1,12 +1,12 @@
 package cash.swazi.client;
 
-import cash.swazi.api.RequestFailedException;
+import cash.swazi.api.exception.RequestFailedException;
 import cash.swazi.api.TokenProvider;
 import cash.swazi.constant.Headers;
-import cash.swazi.model.AccessToken;
-import cash.swazi.model.AccessTokenDeserializer;
+import cash.swazi.model.auth.AccessToken;
+import cash.swazi.model.auth.AccessTokenDeserializer;
+import cash.swazi.util.HeaderUtils;
 import cash.swazi.util.ResponseUtils;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.HttpResponse;
 
@@ -38,13 +38,14 @@ public final class AuthenticationClient extends BasicAPIClient implements TokenP
     }
 
     private AccessToken requestNewAccessToken() throws IOException, RequestFailedException {
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.AUTHORIZATION,
-                Headers.SUBSCRIPTION_KEY
+        Map<String, String> headers = HeaderUtils.generateHeader(
+                getOptions(),
+                Headers.SUBSCRIPTION_KEY,
+                Headers.AUTHORIZATION
         );
 
         try {
-            HttpResponse response = getRestClient().post(true, "collection/token/", headers, null, null);
+            HttpResponse response = getRestClient().post(true, tokenPath+"/token/", headers, null, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 throw produceFailureException(response);
             }

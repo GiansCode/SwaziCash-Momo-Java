@@ -1,6 +1,7 @@
 package cash.swazi.api;
 
-import cash.swazi.model.AccessToken;
+import cash.swazi.api.exception.RequestFailedException;
+import cash.swazi.model.auth.AccessToken;
 
 import java.io.IOException;
 

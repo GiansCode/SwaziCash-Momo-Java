@@ -1,4 +1,4 @@
-package cash.swazi.model;
+package cash.swazi.model.auth;
 
 import com.google.gson.InstanceCreator;
 import com.google.gson.annotations.SerializedName;

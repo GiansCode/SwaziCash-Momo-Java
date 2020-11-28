@@ -1,4 +1,4 @@
-package cash.swazi.model;
+package cash.swazi.model.requests;
 
 public final class PaymentRequest extends Payment {
     private final Party payer;

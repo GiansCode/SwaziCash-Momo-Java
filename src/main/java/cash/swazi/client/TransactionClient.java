@@ -1,14 +1,16 @@
 package cash.swazi.client;
 
-import cash.swazi.api.CollectionsDelegate;
-import cash.swazi.api.RequestFailedException;
+import cash.swazi.api.Transacting;
+import cash.swazi.api.exception.RequestFailedException;
 import cash.swazi.api.TokenProvider;
 import cash.swazi.constant.Headers;
-import cash.swazi.model.AccessToken;
-import cash.swazi.model.Balance;
-import cash.swazi.model.PaymentRequest;
+import cash.swazi.model.auth.AccessToken;
+import cash.swazi.model.requests.Payment;
+import cash.swazi.model.transaction.Balance;
+import cash.swazi.model.requests.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
 import cash.swazi.util.AuthUtils;
+import cash.swazi.util.HeaderUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.JsonObject;
 import org.apache.http.HttpResponse;
@@ -19,37 +21,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class CollectionsClient extends BasicAPIClient implements CollectionsDelegate {
+abstract class TransactionClient extends BasicAPIClient implements Transacting {
     private final TokenProvider tokenProvider;
-
-    public CollectionsClient(Options options) {
-        this(options, new AuthenticationClient(options, "collection/token/"));
+    private final String apiPath;
+    private final String requestPath;
+    public TransactionClient(Options options, String apiPath, String requestPath) {
+        this(options, new AuthenticationClient(options, "collection"), apiPath, requestPath);
     }
 
-    public CollectionsClient(Options options, TokenProvider tokenProvider) {
+    public TransactionClient(Options options, TokenProvider tokenProvider, String apiPath, String requestPath) {
         super(options);
         this.tokenProvider = tokenProvider;
+        this.apiPath = apiPath;
+        this.requestPath = requestPath;
     }
 
-    public CollectionsClient(Options options, IRestClient client, TokenProvider tokenProvider) {
+    public TransactionClient(Options options, IRestClient client, TokenProvider tokenProvider, String apiPath, String requestPath) {
         super(options, client);
         this.tokenProvider = tokenProvider;
+        this.apiPath = apiPath;
+        this.requestPath = requestPath;
     }
 
-    public void requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException, RequestFailedException {
-        AccessToken token = tokenProvider.getToken();
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.SUBSCRIPTION_KEY,
-                Headers.TARGET_ENVIRONMENT
-        );
-        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
+    void sendTransactionRequest(UUID referenceId, String callbackUrl, Payment request) throws IOException, RequestFailedException {
+        Map<String,String> headers = HeaderUtils.generateHeader(getOptions(), tokenProvider.getToken(), Headers.AUTHORIZATION, Headers.SUBSCRIPTION_KEY, Headers.TARGET_ENVIRONMENT);
         headers.put(Headers.CALLBACK_URL, callbackUrl);
         headers.put(Headers.REFERENCE_ID, referenceId.toString());
-
         String body = getGson().toJson(request);
-
         try {
-            HttpResponse response = getRestClient().post(true, "collection/v1_0/requesttopay", headers, null, body);
+            HttpResponse response = getRestClient().post(true, apiPath + "/v1_0/" + requestPath, headers, null, body);
             if (response.getStatusLine().getStatusCode() != 202) {
                 throw produceFailureException(response);
             }
@@ -60,18 +60,11 @@ public final class CollectionsClient extends BasicAPIClient implements Collectio
     }
 
     public TransactionInformation getTransactionInformation(UUID transactionId) throws IOException, RequestFailedException {
-        AccessToken token = tokenProvider.getToken();
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.SUBSCRIPTION_KEY,
-                Headers.TARGET_ENVIRONMENT
-        );
-        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
+        Map<String,String> headers = HeaderUtils.generateHeader(getOptions(), tokenProvider.getToken(), Headers.AUTHORIZATION, Headers.SUBSCRIPTION_KEY, Headers.TARGET_ENVIRONMENT);
         Map<String,String> parameters = new HashMap<>();
         parameters.put("referenceId", transactionId.toString());
-
-
         try {
-            HttpResponse response = getRestClient().get(true, "collection/v1_0/requesttopay/{referenceId}", headers, parameters);
+            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/"+requestPath+"/{referenceId}", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 throw produceFailureException(response);
             }
@@ -86,14 +79,9 @@ public final class CollectionsClient extends BasicAPIClient implements Collectio
 
     public Balance getBalance() throws IOException, RequestFailedException {
         AccessToken token = tokenProvider.getToken();
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.SUBSCRIPTION_KEY,
-                Headers.TARGET_ENVIRONMENT
-        );
-        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
-
+        Map<String,String> headers = HeaderUtils.generateHeader(getOptions(), token, Headers.AUTHORIZATION, Headers.SUBSCRIPTION_KEY, Headers.TARGET_ENVIRONMENT);
         try {
-            HttpResponse response = getRestClient().get(true, "collection/v1_0/account/balance", headers, null);
+            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/account/balance", headers, null);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 throw produceFailureException(response);
             }
@@ -109,17 +97,13 @@ public final class CollectionsClient extends BasicAPIClient implements Collectio
 
     public Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException, RequestFailedException {
         AccessToken token = tokenProvider.getToken();
-        Map<String,String> headers = getOptions().generateHeader(
-                Headers.SUBSCRIPTION_KEY,
-                Headers.TARGET_ENVIRONMENT
-        );
-        headers.put(Headers.AUTHORIZATION, AuthUtils.encodeBearerAuthentication(token));
+        Map<String,String> headers = HeaderUtils.generateHeader(getOptions(), token, Headers.AUTHORIZATION, Headers.SUBSCRIPTION_KEY, Headers.TARGET_ENVIRONMENT);
         Map<String,String> parameters = new HashMap<>();
         parameters.put("accountHolderIdType", accountHolderIdType.toString());
         parameters.put("accountHolderId", accountHolderId);
 
         try {
-            HttpResponse response = getRestClient().get(true, "collection/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", headers, parameters);
+            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", headers, parameters);
             if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
                 throw produceFailureException(response);
             }

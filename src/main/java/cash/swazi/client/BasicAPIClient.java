@@ -1,13 +1,13 @@
 package cash.swazi.client;
 
-import cash.swazi.api.RequestFailedException;
+import cash.swazi.api.exception.RequestFailedException;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
 
-public abstract class BasicAPIClient {
+abstract class BasicAPIClient {
     private final Options options;
     private final IRestClient client;
     private final Gson gson;

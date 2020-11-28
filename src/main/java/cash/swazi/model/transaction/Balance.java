@@ -1,4 +1,4 @@
-package cash.swazi.model;
+package cash.swazi.model.transaction;
 
 import com.google.gson.annotations.SerializedName;
 

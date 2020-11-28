@@ -1,6 +1,7 @@
 package cash.swazi.client;
 
 import cash.swazi.constant.Headers;
+import cash.swazi.model.auth.AccessToken;
 import cash.swazi.util.AuthUtils;
 import org.intellij.lang.annotations.MagicConstant;
 
@@ -64,12 +65,4 @@ public final class Options {
         return currency;
     }
 
-    public Map<String,String> generateHeader(@MagicConstant(valuesFromClass = Headers.class) String... headerKeys) {
-        Map<String,String> header = new HashMap<>();
-        for (String key: headerKeys) {
-            header.put(key, basicHeaders.get(key));
-        }
-        // header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
-        return header;
-    }
 }

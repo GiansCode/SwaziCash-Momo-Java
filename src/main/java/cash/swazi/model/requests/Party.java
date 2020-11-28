@@ -1,4 +1,4 @@
-package cash.swazi.model;
+package cash.swazi.model.requests;
 
 public class Party {
     private final PartyIdType partyIdType;

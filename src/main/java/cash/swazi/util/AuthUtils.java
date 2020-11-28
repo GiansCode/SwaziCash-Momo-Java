@@ -1,6 +1,6 @@
 package cash.swazi.util;
 
-import cash.swazi.model.AccessToken;
+import cash.swazi.model.auth.AccessToken;
 import org.apache.commons.codec.binary.Base64;
 
 public final class AuthUtils {
