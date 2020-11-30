@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-abstract class TransactionClient extends BasicAPIClient implements Transacting {
+abstract class TransactionClient extends OptionedAPIClient implements Transacting {
     private final TokenProvider tokenProvider;
     private final String apiPath;
     private final String requestPath;
@@ -69,7 +69,7 @@ abstract class TransactionClient extends BasicAPIClient implements Transacting {
                 throw produceFailureException(response);
             }
             String responseBody = ResponseUtils.getResponseBody(response);
-            return getGson().fromJson(responseBody,TransactionInformation.class);
+            return getGson().fromJson(responseBody, TransactionInformation.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();

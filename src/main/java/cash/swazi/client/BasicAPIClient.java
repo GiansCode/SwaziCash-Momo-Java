@@ -8,30 +8,24 @@ import org.apache.http.HttpResponse;
 import java.io.IOException;
 
 abstract class BasicAPIClient {
-    private final Options options;
     private final IRestClient client;
     private final Gson gson;
 
-    public BasicAPIClient(Options options) {
-        this(options, new RestClient(options.getBaseUrl()));
+    public BasicAPIClient(String baseUrl) {
+        this(new RestClient(baseUrl));
     }
 
-    public BasicAPIClient(Options options, Gson gson) {
-        this(options, new RestClient(options.getBaseUrl()), gson);
+    public BasicAPIClient(String baseUrl, Gson gson) {
+        this(new RestClient(baseUrl), gson);
     }
 
-    public BasicAPIClient(Options options, IRestClient client) {
-        this(options, client, new Gson());
+    public BasicAPIClient(IRestClient client) {
+        this(client, new Gson());
     }
 
-    public BasicAPIClient(Options options, IRestClient client, Gson gson) {
-        this.options = options;
+    public BasicAPIClient(IRestClient client, Gson gson) {
         this.client = client;
         this.gson = gson;
-    }
-
-    public Options getOptions() {
-        return options;
     }
 
     protected IRestClient getRestClient() {

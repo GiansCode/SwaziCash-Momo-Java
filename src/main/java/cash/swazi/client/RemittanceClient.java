@@ -8,7 +8,7 @@ import cash.swazi.model.requests.TransferRequest;
 import java.io.IOException;
 import java.util.UUID;
 
-public class RemittanceClient extends TransactionClient implements RemittanceDelegate {
+public final class RemittanceClient extends TransactionClient implements RemittanceDelegate {
     public RemittanceClient(Options options) {
         super(options, "disbursement", "transfer");
     }

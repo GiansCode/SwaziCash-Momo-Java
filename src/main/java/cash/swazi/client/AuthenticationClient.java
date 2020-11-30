@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-public final class AuthenticationClient extends BasicAPIClient implements TokenProvider {
+public final class AuthenticationClient extends OptionedAPIClient implements TokenProvider {
     private final String tokenPath;
 
     private AccessToken accessToken;
