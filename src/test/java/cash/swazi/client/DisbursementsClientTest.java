@@ -13,7 +13,7 @@ public class DisbursementsClientTest extends TestCase {
     static {
         try {
             options = SwaziCashFactory
-                    .createSandboxOptionProvider("e879669e61f64d9f882c0b90d79d8fac")
+                    .createSandboxOptionProvider(System.getenv("MOMO_SUB_COLLECTIONS"))
                     .requestSandboxOptions(UUID.fromString("ff2c26e6-9cd3-40e5-9760-6cf1656def08"), "");
         } catch (IOException | RequestFailedException e) {
             e.printStackTrace();
