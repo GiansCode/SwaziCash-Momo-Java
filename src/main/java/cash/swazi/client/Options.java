@@ -17,7 +17,6 @@ public final class Options {
     private final String basicAuthorization;
     private final String targetEnvironment;
     private final String currency;
-    private final Map<String,String> basicHeaders = new HashMap<>();
 
 
     public Options(String subscriptionKey, String apiKey, UUID userId, String baseUrl, String targetEnvironment, String currency) {
@@ -28,13 +27,6 @@ public final class Options {
         this.basicAuthorization = AuthUtils.encodeBasicAuthentication(getUserId().toString(), getApiKey());
         this.targetEnvironment = targetEnvironment;
         this.currency = currency;
-        prepareBasicHeaders();
-    }
-
-    private void prepareBasicHeaders() {
-        basicHeaders.put(Headers.AUTHORIZATION, getBasicAuthorization());
-        basicHeaders.put(Headers.SUBSCRIPTION_KEY, getSubscriptionKey());
-        basicHeaders.put(Headers.TARGET_ENVIRONMENT, getTargetEnvironment());
     }
 
     public String getSubscriptionKey() {

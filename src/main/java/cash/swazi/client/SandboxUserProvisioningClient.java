@@ -6,6 +6,7 @@ import cash.swazi.constant.Headers;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.JsonObject;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,7 +25,9 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
     }
 
     public Options requestSandboxOptions(UUID userId, String providerCallbackHost) throws IOException, RequestFailedException {
-        assert createApiUser(userId, providerCallbackHost) || userExists(userId);
+        if (!userExists(userId)) {
+            createApiUser(userId, providerCallbackHost);
+        }
         return fetchApiUserOptions(userId);
     }
 
@@ -36,8 +39,8 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("providerCallbackHost", providerCallbackHost);
         try {
-            HttpResponse response = getRestClient().post(true, "v1_0/apiuser", headers, null, jsonObject.toString());
-            return (response.getStatusLine().getStatusCode() == 201);
+            Response response = getRestClient().post(true, "v1_0/apiuser", headers, null, jsonObject.toString());
+            return (response.getStatusCode() == 201);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -51,8 +54,8 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         Map<String,String> parameters = new HashMap<>();
         parameters.put(Headers.REFERENCE_ID, userId.toString());
         try {
-            HttpResponse response = getRestClient().post(true, "v1_0/apiuser/{X-Reference-Id}", headers, parameters, null);
-            return (response.getStatusLine().getStatusCode() == 200);
+            Response response = getRestClient().get(true, "v1_0/apiuser/{X-Reference-Id}", headers, parameters);
+            return (response.getStatusCode() == 200);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -69,11 +72,11 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
 
 
         try {
-            HttpResponse response = getRestClient().post(true, "v1_0/apiuser/{X-Reference-Id}/apikey", headers, null, null);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+            Response response = getRestClient().post(true, "v1_0/apiuser/{X-Reference-Id}/apikey", headers, parameters, null);
+            if (response.getStatusCode() != 201 || response.getBody() == null) {
                 throw produceFailureException(response);
             }
-            String key = getGson().fromJson(ResponseUtils.getResponseBody(response),JsonObject.class).get("apiKey").getAsString();
+            String key = getGson().fromJson(response.getBody(),JsonObject.class).get("apiKey").getAsString();
             return new Options(subscriptionKey, key, userId, baseUrl, "sandbox", "EUR");
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");

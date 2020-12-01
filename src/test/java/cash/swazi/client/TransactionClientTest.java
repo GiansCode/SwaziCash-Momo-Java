@@ -1,5 +1,6 @@
 package cash.swazi.client;
 
+import cash.swazi.api.SwaziCashFactory;
 import cash.swazi.api.Transacting;
 import cash.swazi.api.exception.RequestFailedException;
 import cash.swazi.model.transaction.Balance;
@@ -9,14 +10,17 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class TransactionClientTest extends TestCase {
-    private final Options options = new Options(
-            System.getenv("MOMO_COLLECTIONS_SUB_KEY"),
-            System.getenv("SANDBOX_API_KEY"),
-            UUID.fromString(System.getenv("SANDBOX_USERID")),
-            "https://sandbox.momodeveloper.mtn.com/",
-            "sandbox",
-            "EUR"
-    );
+    private static Options options;
+
+    static {
+        try {
+            options = SwaziCashFactory
+                    .createSandboxOptionProvider("e879669e61f64d9f882c0b90d79d8fac")
+                    .requestSandboxOptions(UUID.fromString("ff2c26e6-9cd3-40e5-9760-6cf1656def08"), "");
+        } catch (IOException | RequestFailedException e) {
+            e.printStackTrace();
+        }
+    }
     private final Transacting transacting = new CollectionClient(options);
 
     public void testGetBalance() throws IOException, RequestFailedException {

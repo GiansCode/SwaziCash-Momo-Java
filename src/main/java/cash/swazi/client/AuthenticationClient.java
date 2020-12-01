@@ -9,6 +9,7 @@ import cash.swazi.util.HeaderUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.GsonBuilder;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -43,14 +44,12 @@ public final class AuthenticationClient extends OptionedAPIClient implements Tok
                 Headers.SUBSCRIPTION_KEY,
                 Headers.AUTHORIZATION
         );
-
         try {
-            HttpResponse response = getRestClient().post(true, tokenPath+"/token/", headers, null, null);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+            Response response = getRestClient().post(true, tokenPath+"/token/", headers, null, null);
+            if (response.getStatusCode() != 200 || response.getBody() == null) {
                 throw produceFailureException(response);
             }
-            String responseBody = ResponseUtils.getResponseBody(response);
-            return getGson().fromJson(responseBody, AccessToken.class);
+            return getGson().fromJson(response.getBody(), AccessToken.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();

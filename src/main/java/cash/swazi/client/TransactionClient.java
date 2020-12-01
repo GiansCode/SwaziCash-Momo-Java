@@ -7,13 +7,12 @@ import cash.swazi.constant.Headers;
 import cash.swazi.model.auth.AccessToken;
 import cash.swazi.model.requests.Payment;
 import cash.swazi.model.transaction.Balance;
-import cash.swazi.model.requests.PaymentRequest;
 import cash.swazi.model.transaction.TransactionInformation;
-import cash.swazi.util.AuthUtils;
 import cash.swazi.util.HeaderUtils;
 import cash.swazi.util.ResponseUtils;
 import com.google.gson.JsonObject;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -49,8 +48,8 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
         headers.put(Headers.REFERENCE_ID, referenceId.toString());
         String body = getGson().toJson(request);
         try {
-            HttpResponse response = getRestClient().post(true, apiPath + "/v1_0/" + requestPath, headers, null, body);
-            if (response.getStatusLine().getStatusCode() != 202) {
+            Response response = getRestClient().post(true, apiPath + "/v1_0/" + requestPath, headers, null, body);
+            if (response.getStatusCode() != 202) {
                 throw produceFailureException(response);
             }
         } catch (URISyntaxException e) {
@@ -64,12 +63,11 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
         Map<String,String> parameters = new HashMap<>();
         parameters.put("referenceId", transactionId.toString());
         try {
-            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/"+requestPath+"/{referenceId}", headers, parameters);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+            Response response = getRestClient().get(true, apiPath+"/v1_0/"+requestPath+"/{referenceId}", headers, parameters);
+            if (response.getStatusCode() != 200 || response.getBody() == null) {
                 throw produceFailureException(response);
             }
-            String responseBody = ResponseUtils.getResponseBody(response);
-            return getGson().fromJson(responseBody, TransactionInformation.class);
+            return getGson().fromJson(response.getBody(), TransactionInformation.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -81,12 +79,11 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
         AccessToken token = tokenProvider.getToken();
         Map<String,String> headers = HeaderUtils.generateHeader(getOptions(), token, Headers.AUTHORIZATION, Headers.SUBSCRIPTION_KEY, Headers.TARGET_ENVIRONMENT);
         try {
-            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/account/balance", headers, null);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+            Response response = getRestClient().get(true, apiPath+"/v1_0/account/balance", headers, null);
+            if (response.getStatusCode() != 200 || response.getBody() == null) {
                 throw produceFailureException(response);
             }
-            String responseBody = ResponseUtils.getResponseBody(response);
-            return getGson().fromJson(responseBody, Balance.class);
+            return getGson().fromJson(response.getBody(), Balance.class);
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();
@@ -103,12 +100,11 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
         parameters.put("accountHolderId", accountHolderId);
 
         try {
-            HttpResponse response = getRestClient().get(true, apiPath+"/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", headers, parameters);
-            if (response.getStatusLine().getStatusCode() != 200 || response.getEntity() == null) {
+            Response response = getRestClient().get(true, apiPath+"/v1_0/accountholder/{accountHolderIdType}/{accountHolderId}/active", headers, parameters);
+            if (response.getStatusCode() != 200 || response.getBody() == null) {
                 throw produceFailureException(response);
             }
-            String responseBody = ResponseUtils.getResponseBody(response);
-            return getGson().fromJson(responseBody, JsonObject.class).get("result").getAsBoolean();
+            return getGson().fromJson(response.getBody(), JsonObject.class).get("result").getAsBoolean();
         } catch (URISyntaxException e) {
             System.err.println("Invalid baseURI or request path changed!");
             e.printStackTrace();

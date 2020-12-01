@@ -36,12 +36,11 @@ abstract class BasicAPIClient {
         return gson;
     }
 
-    protected RequestFailedException produceFailureException(HttpResponse response) throws IOException {
-        String respText = ResponseUtils.getResponseBody(response);
+    protected RequestFailedException produceFailureException(Response response) throws IOException {
         RequestFailedException.FailReason failReason = null;
-        if (respText != null && respText.length() != 0) {
-            failReason = gson.fromJson(respText,RequestFailedException.FailReason.class);
+        if (response.getBody() != null && response.getBody().length() != 0) {
+            failReason = gson.fromJson(response.getBody(),RequestFailedException.FailReason.class);
         }
-        return new RequestFailedException(response.getStatusLine().getStatusCode(), failReason);
+        return new RequestFailedException(response.getStatusCode(), failReason);
     }
 }
