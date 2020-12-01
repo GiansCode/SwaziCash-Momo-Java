@@ -25,7 +25,7 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
     private final String apiPath;
     private final String requestPath;
     public TransactionClient(Options options, String apiPath, String requestPath) {
-        this(options, new AuthenticationClient(options, "collection"), apiPath, requestPath);
+        this(options, new AuthenticationClient(options, apiPath), apiPath, requestPath);
     }
 
     public TransactionClient(Options options, TokenProvider tokenProvider, String apiPath, String requestPath) {

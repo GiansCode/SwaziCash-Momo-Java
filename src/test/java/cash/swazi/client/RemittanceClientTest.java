@@ -1,7 +1,11 @@
 package cash.swazi.client;
 
+import cash.swazi.api.DisbursementDelegate;
+import cash.swazi.api.RemittanceDelegate;
 import cash.swazi.api.SwaziCashFactory;
 import cash.swazi.api.exception.RequestFailedException;
+import cash.swazi.model.requests.Party;
+import cash.swazi.model.requests.TransferRequest;
 import junit.framework.TestCase;
 
 import java.io.IOException;
@@ -13,10 +17,28 @@ public class RemittanceClientTest extends TestCase {
     static {
         try {
             options = SwaziCashFactory
-                    .createSandboxOptionProvider(System.getenv("MOMO_SUB_COLLECTIONS"))
+                    .createSandboxOptionProvider(System.getenv("MOMO_SUB_REMITTANCE"))
                     .requestSandboxOptions(UUID.fromString("ff2c26e6-9cd3-40e5-9760-6cf1656def08"), "");
         } catch (IOException | RequestFailedException e) {
             e.printStackTrace();
         }
+    }
+
+    private final UUID transactionUUID = UUID.randomUUID();
+    private final TransferRequest request = new TransferRequest(
+            100,
+            "EUR",
+            "4565411",
+            new Party(
+                    Party.PartyIdType.MSISDN,
+                    "918369110173"
+            ),
+            "tester",
+            "testee"
+    );
+
+    public void testTransfer() throws IOException, RequestFailedException {
+        final RemittanceDelegate client = SwaziCashFactory.createRemittanceDelegate(options);
+        client.transfer(transactionUUID, null, request);
     }
 }

@@ -10,15 +10,15 @@ import java.util.UUID;
 
 public final class RemittanceClient extends TransactionClient implements RemittanceDelegate {
     public RemittanceClient(Options options) {
-        super(options, "disbursement", "transfer");
+        super(options, "remittance", "transfer");
     }
 
     public RemittanceClient(Options options, TokenProvider tokenProvider) {
-        super(options, tokenProvider, "disbursement", "transfer");
+        super(options, tokenProvider, "remittance", "transfer");
     }
 
     public RemittanceClient(Options options, IRestClient client, TokenProvider tokenProvider) {
-        super(options, client, tokenProvider, "disbursement", "transfer");
+        super(options, client, tokenProvider, "remittance", "transfer");
     }
 
     @Override
