@@ -1,6 +1,8 @@
 package cash.swazi.momo.model.transaction;
-
-public class TransactionFailReason {
+/**
+ * POJO stating failure reason of a transaction if it failed.
+ */
+public final class TransactionFailReason {
     private final Code code;
     private final String message;
 

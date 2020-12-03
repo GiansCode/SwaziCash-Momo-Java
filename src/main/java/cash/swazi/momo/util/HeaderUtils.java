@@ -7,7 +7,9 @@ import org.intellij.lang.annotations.MagicConstant;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Utility class responsible for separating the task of header generation
+ */
 public class HeaderUtils {
     private HeaderUtils() { }
 

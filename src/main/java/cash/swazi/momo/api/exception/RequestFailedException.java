@@ -2,6 +2,9 @@ package cash.swazi.momo.api.exception;
 
 import java.util.Objects;
 
+/**
+ * Thrown when the request results in a failed status code
+ */
 public final class RequestFailedException extends Exception {
     private final int statusCode;
     private final FailReason reason;

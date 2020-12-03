@@ -1,7 +1,10 @@
 package cash.swazi.momo.api;
 
 import cash.swazi.momo.client.*;
-
+/**
+ *  Static factory class that provides access to different internal components of the API. This class would usually be
+ *  used as the entrypoint into the API
+ */
 public final class SwaziCashFactory {
     private SwaziCashFactory() {}
 

@@ -1,5 +1,8 @@
 package cash.swazi.momo.client;
 
+/**
+ * POJO with data returned from {@link cash.swazi.momo.client.IRestClient}
+ */
 public final class Response {
     private final int statusCode;
     private final String body;

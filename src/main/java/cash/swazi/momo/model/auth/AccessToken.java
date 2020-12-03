@@ -1,11 +1,11 @@
 package cash.swazi.momo.model.auth;
 
-import com.google.gson.InstanceCreator;
 import com.google.gson.annotations.SerializedName;
 
-import java.lang.reflect.Type;
-import java.time.Instant;
-
+/**
+ * Data object that represents the access token returned by MoMo API
+ * Used for Bearer authentication to other API calls
+ */
 public final class AccessToken {
 
     @SerializedName("access_token")

@@ -15,6 +15,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+/**
+ * Implementation of {@link cash.swazi.momo.client.RestClient}
+ * Handles sending REST requests
+ */
 public final class RestClient implements IRestClient {
     private final String baseUrl;
 

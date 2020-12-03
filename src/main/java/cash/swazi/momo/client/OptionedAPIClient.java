@@ -2,6 +2,9 @@ package cash.swazi.momo.client;
 
 import com.google.gson.Gson;
 
+/**
+ * Interface to expose only required requests to higher level
+ */
 abstract class OptionedAPIClient extends BasicAPIClient {
     private final Options options;
     public OptionedAPIClient(Options options) {

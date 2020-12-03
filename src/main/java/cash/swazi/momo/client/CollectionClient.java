@@ -7,7 +7,11 @@ import cash.swazi.momo.model.requests.PaymentRequest;
 
 import java.io.IOException;
 import java.util.UUID;
-
+/**
+ * Implementation of {@link cash.swazi.momo.api.CollectionDelegate}
+ * Handles interactions with MTN MoMo Collection API
+ * @see <a href="https://momodeveloper.mtn.com/docs/services/collection/">Collections API</a>
+ */
 public final class CollectionClient extends TransactionClient implements CollectionDelegate {
     public CollectionClient(Options options) {
         super(options, "collection", "requesttopay");

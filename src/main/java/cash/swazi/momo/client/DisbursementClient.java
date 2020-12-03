@@ -7,7 +7,11 @@ import cash.swazi.momo.model.requests.TransferRequest;
 
 import java.io.IOException;
 import java.util.UUID;
-
+/**
+ * Implementation of {@link cash.swazi.momo.api.DisbursementDelegate}
+ * Handles interactions with MTN MoMo Disbursement API
+ * @see <a href="https://momodeveloper.mtn.com/docs/services/disbursement/">Disbursement API</a>
+ */
 public final class DisbursementClient extends TransactionClient implements DisbursementDelegate {
     public DisbursementClient(Options options) {
         super(options, "disbursement", "transfer");

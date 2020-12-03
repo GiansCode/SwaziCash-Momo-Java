@@ -7,7 +7,11 @@ import cash.swazi.momo.model.requests.TransferRequest;
 
 import java.io.IOException;
 import java.util.UUID;
-
+/**
+ * Implementation of {@link cash.swazi.momo.api.RemittanceDelegate}
+ * Handles interactions with MTN MoMo Remittance API
+ * @see <a href="https://momodeveloper.mtn.com/docs/services/remittance/">Remittance API</a>
+ */
 public final class RemittanceClient extends TransactionClient implements RemittanceDelegate {
     public RemittanceClient(Options options) {
         super(options, "remittance", "transfer");

@@ -3,7 +3,9 @@ package cash.swazi.momo.client;
 import cash.swazi.momo.util.AuthUtils;
 
 import java.util.UUID;
-
+/**
+ * A POJO defining the parameters required for the client to be used.
+ */
 public final class Options {
     private final String subscriptionKey;
     private final String apiKey;

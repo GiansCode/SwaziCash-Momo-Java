@@ -2,6 +2,9 @@ package cash.swazi.momo.model.transaction;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * POJO representing data received about a User's balance
+ */
 public class Balance {
     @SerializedName("availableBalance")
     private final double availableBalance;

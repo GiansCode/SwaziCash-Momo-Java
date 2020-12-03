@@ -1,5 +1,8 @@
 package cash.swazi.momo.model.requests;
 
+/**
+ * Represents a party in a transaction. Depending on the context, could be either the payer or the payee
+ */
 public class Party {
     private final PartyIdType partyIdType;
     private final String partyId;

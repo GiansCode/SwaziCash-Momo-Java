@@ -1,5 +1,9 @@
 package cash.swazi.momo.model.requests;
 
+/**
+ * Abstraction between {@link cash.swazi.momo.model.requests.PaymentRequest} & {@link cash.swazi.momo.model.requests.TransferRequest}3
+ * Defines basic parameters for a transaction
+ */
 public abstract class Payment {
     private final String amount;
     private final String currency;

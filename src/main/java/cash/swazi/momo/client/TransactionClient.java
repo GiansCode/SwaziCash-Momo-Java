@@ -16,7 +16,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
+/**
+ * Implementation of {@link cash.swazi.momo.api.Transacting}
+ * Abstraction between the 3 Delegates {@link cash.swazi.momo.api.CollectionDelegate}, {@link cash.swazi.momo.api.DisbursementDelegate}, {@link cash.swazi.momo.api.RemittanceDelegate}
+ */
 abstract class TransactionClient extends OptionedAPIClient implements Transacting {
     private final TokenProvider tokenProvider;
     private final String apiPath;

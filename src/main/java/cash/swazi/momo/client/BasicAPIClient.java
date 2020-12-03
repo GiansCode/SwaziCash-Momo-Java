@@ -4,7 +4,9 @@ import cash.swazi.momo.api.exception.RequestFailedException;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-
+/**
+ * Abstraction between the different Client classes
+ */
 abstract class BasicAPIClient {
     private final IRestClient client;
     private final Gson gson;

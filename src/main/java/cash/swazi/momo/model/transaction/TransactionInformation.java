@@ -3,8 +3,11 @@ package cash.swazi.momo.model.transaction;
 import cash.swazi.momo.model.requests.Party;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
-
-public class TransactionInformation {
+/**
+ * POJO representing information received about a transaction
+ * @apiNote {@link #getReason()} would be a non-null value only if the transaction had failed. The same can be checked using {@link #getStatus()} ()}
+ */
+public final class TransactionInformation {
     private final double amount;
     private final String currency;
     private final String financialTransactionId;

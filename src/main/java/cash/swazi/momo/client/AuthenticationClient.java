@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+/**
+ * Implementation of {@link cash.swazi.momo.api.TokenProvider}
+ * Provides access tokens and handles renewal on expiry
+ */
 public final class AuthenticationClient extends OptionedAPIClient implements TokenProvider {
     private final String tokenPath;
 

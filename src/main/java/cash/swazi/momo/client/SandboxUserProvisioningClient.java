@@ -10,7 +10,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
+/**
+ * Implementation of {@link cash.swazi.momo.api.SandboxOptionProvider}
+ * Handles fetching sandbox user info and creating Sandbox Options {@link cash.swazi.momo.client.Options}
+ */
 public final class SandboxUserProvisioningClient extends BasicAPIClient implements SandboxOptionProvider {
 
     private final String subscriptionKey;
