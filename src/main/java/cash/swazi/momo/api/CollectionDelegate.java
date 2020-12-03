@@ -12,5 +12,13 @@ import java.util.UUID;
  *  {@link cash.swazi.momo.api.SwaziCashFactory#createCollectionDelegate(Options)}
  */
 public interface CollectionDelegate extends Transacting, SelfAuthenticating {
+    /**
+     * Request payment from a user
+     * @param referenceId Reference-Id to request Transaction Info later
+     * @param callbackUrl URL to the server where the callback should be sent
+     * @param request The request to be sent
+     * @throws IOException thrown if client fails to send request
+     * @throws RequestFailedException thrown if an unexpected or error status code is received
+     */
     void requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException, RequestFailedException;
 }
