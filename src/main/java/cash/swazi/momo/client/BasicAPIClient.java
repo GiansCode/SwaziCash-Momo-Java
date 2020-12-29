@@ -1,5 +1,6 @@
 package cash.swazi.momo.client;
 
+import cash.swazi.momo.api.exception.FailReason;
 import cash.swazi.momo.api.exception.RequestFailedException;
 import com.google.gson.Gson;
 
@@ -37,9 +38,9 @@ abstract class BasicAPIClient {
     }
 
     protected RequestFailedException produceFailureException(Response response) throws IOException {
-        RequestFailedException.FailReason failReason = null;
+        FailReason failReason = null;
         if (response.getBody() != null && response.getBody().length() != 0) {
-            failReason = gson.fromJson(response.getBody(),RequestFailedException.FailReason.class);
+            failReason = gson.fromJson(response.getBody(), FailReason.class);
         }
         return new RequestFailedException(response.getStatusCode(), failReason);
     }

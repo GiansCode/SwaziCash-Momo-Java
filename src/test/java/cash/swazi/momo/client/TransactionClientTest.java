@@ -7,12 +7,18 @@ import cash.swazi.momo.model.transaction.Balance;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 public class TransactionClientTest extends TestCase {
     private static Options options;
 
     static {
+        List<Integer> list = new ArrayList<>();
+        IntStream.range(0,20).filter((i) -> i % 2 == 0).forEach(list::add);
         try {
             options = SwaziCashFactory
                     .createSandboxOptionProvider(System.getenv("MOMO_SUB_COLLECTIONS"))

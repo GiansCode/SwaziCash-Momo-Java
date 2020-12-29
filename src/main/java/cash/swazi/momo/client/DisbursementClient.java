@@ -4,6 +4,7 @@ import cash.swazi.momo.api.DisbursementDelegate;
 import cash.swazi.momo.api.TokenProvider;
 import cash.swazi.momo.api.exception.RequestFailedException;
 import cash.swazi.momo.model.requests.TransferRequest;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public final class DisbursementClient extends TransactionClient implements Disbu
     }
 
     @Override
-    public void transfer(UUID referenceId, String callbackUrl, TransferRequest request) throws IOException, RequestFailedException {
+    public void transfer(@NotNull UUID referenceId, String callbackUrl, @NotNull TransferRequest request) throws IOException, RequestFailedException {
         sendTransactionRequest(referenceId, callbackUrl, request);
     }
 }

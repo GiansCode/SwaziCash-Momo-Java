@@ -4,6 +4,7 @@ import cash.swazi.momo.api.CollectionDelegate;
 import cash.swazi.momo.api.TokenProvider;
 import cash.swazi.momo.api.exception.RequestFailedException;
 import cash.swazi.momo.model.requests.PaymentRequest;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public final class CollectionClient extends TransactionClient implements Collect
         super(options, client, tokenProvider, "collection", "requesttopay");
     }
 
-    public void requestPayment(UUID referenceId, String callbackUrl, PaymentRequest request) throws IOException, RequestFailedException {
+    public void requestPayment(@NotNull UUID referenceId, String callbackUrl, @NotNull PaymentRequest request) throws IOException, RequestFailedException {
         sendTransactionRequest(referenceId, callbackUrl, request);
     }
 }

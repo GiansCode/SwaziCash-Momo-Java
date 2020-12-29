@@ -10,6 +10,7 @@ import cash.swazi.momo.model.transaction.Balance;
 import cash.swazi.momo.model.transaction.TransactionInformation;
 import cash.swazi.momo.util.HeaderUtils;
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -112,7 +113,7 @@ abstract class TransactionClient extends OptionedAPIClient implements Transactin
         return null;
     }
 
-    public TokenProvider getTokenProvider() {
+    public @NotNull TokenProvider getTokenProvider() {
         return tokenProvider;
     }
 

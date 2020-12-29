@@ -12,10 +12,29 @@ import java.util.UUID;
  */
 public interface Transacting {
 
+    /**
+     * @param transactionId Reference id used for the transaction
+     * @return POJO describing information returned about the transaction
+     * @throws IOException
+     * @throws RequestFailedException
+     */
     TransactionInformation getTransactionInformation(UUID transactionId) throws IOException, RequestFailedException;
 
+    /**
+     *
+     * @param accountHolderIdType Type of id being provided
+     * @param accountHolderId Id of account holder
+     * @return Activation status of specified account
+     * @throws IOException
+     * @throws RequestFailedException
+     */
     Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException, RequestFailedException;
 
+    /**
+     * @return Balance associated with api account
+     * @throws IOException
+     * @throws RequestFailedException
+     */
     Balance getBalance() throws IOException, RequestFailedException;
 
     enum AccountHolderIdType {

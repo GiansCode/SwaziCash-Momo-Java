@@ -4,6 +4,7 @@ import cash.swazi.momo.api.SandboxOptionProvider;
 import cash.swazi.momo.api.exception.RequestFailedException;
 import cash.swazi.momo.constant.Headers;
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,7 +25,7 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         this.subscriptionKey = subscriptionKey;
     }
 
-    public Options requestSandboxOptions(UUID userId, String providerCallbackHost) throws IOException, RequestFailedException {
+    public Options requestSandboxOptions(@NotNull UUID userId, String providerCallbackHost) throws IOException, RequestFailedException {
         if (!userExists(userId)) {
             createApiUser(userId, providerCallbackHost);
         }
