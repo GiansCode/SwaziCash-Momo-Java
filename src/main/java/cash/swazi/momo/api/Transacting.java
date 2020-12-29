@@ -15,8 +15,8 @@ public interface Transacting {
     /**
      * @param transactionId Reference id used for the transaction
      * @return POJO describing information returned about the transaction
-     * @throws IOException
-     * @throws RequestFailedException
+     * @throws IOException thrown if client fails to send request
+     * @throws RequestFailedException thrown if an unexpected or error status code is received
      */
     TransactionInformation getTransactionInformation(UUID transactionId) throws IOException, RequestFailedException;
 
@@ -25,15 +25,15 @@ public interface Transacting {
      * @param accountHolderIdType Type of id being provided
      * @param accountHolderId Id of account holder
      * @return Activation status of specified account
-     * @throws IOException
-     * @throws RequestFailedException
+     * @throws IOException thrown if client fails to send request
+     * @throws RequestFailedException thrown if an unexpected or error status code is received
      */
     Boolean isAccountActive(AccountHolderIdType accountHolderIdType, String accountHolderId) throws IOException, RequestFailedException;
 
     /**
      * @return Balance associated with api account
-     * @throws IOException
-     * @throws RequestFailedException
+     * @throws IOException thrown if client fails to send request
+     * @throws RequestFailedException thrown if an unexpected or error status code is received
      */
     Balance getBalance() throws IOException, RequestFailedException;
 

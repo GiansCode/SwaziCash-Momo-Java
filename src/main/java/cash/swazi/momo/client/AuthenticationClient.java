@@ -21,16 +21,28 @@ public final class AuthenticationClient extends OptionedAPIClient implements Tok
 
     private AccessToken accessToken;
 
+    /**
+     * @param options Data required for requests
+     * @param tokenPath path from baseurl to send token request to
+     */
     public AuthenticationClient(Options options, String tokenPath) {
         super(options, new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create());
         this.tokenPath = tokenPath;
     }
 
+    /**
+     * @param options Data required for requests
+     * @param client Rest client to be used for the request
+     * @param tokenPath path from baseurl to send token request to
+     */
     public AuthenticationClient(Options options, IRestClient client, String tokenPath) {
         super(options, client, new GsonBuilder().registerTypeAdapter(AccessToken.class, new AccessTokenDeserializer()).create());
         this.tokenPath = tokenPath;
     }
 
+    /**
+     *  {@inheritDoc}
+     */
     @Override
     public AccessToken getToken() throws IOException, RequestFailedException {
         if (accessToken == null || accessToken.hasExpired()) {
@@ -39,6 +51,12 @@ public final class AuthenticationClient extends OptionedAPIClient implements Tok
         return accessToken;
     }
 
+    /**
+     * Requests an access token from the api
+     * @return New access token
+     * @throws IOException thrown if client fails to send request
+     * @throws RequestFailedException thrown if an unexpected or error status code is received
+     */
     private AccessToken requestNewAccessToken() throws IOException, RequestFailedException {
         Map<String, String> headers = HeaderUtils.generateHeader(
                 getOptions(),

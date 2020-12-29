@@ -26,6 +26,10 @@ public final class CollectionClient extends TransactionClient implements Collect
         super(options, client, tokenProvider, "collection", "requesttopay");
     }
 
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
     public void requestPayment(@NotNull UUID referenceId, String callbackUrl, @NotNull PaymentRequest request) throws IOException, RequestFailedException {
         sendTransactionRequest(referenceId, callbackUrl, request);
     }
