@@ -1,7 +1,10 @@
 package cash.swazi.momo.client;
 
-import cash.swazi.momo.api.SandboxOptionProvider;
+import cash.swazi.momo.api.delegate.SandboxOptionDelegate;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
+import cash.swazi.momo.client.data.Response;
+import cash.swazi.momo.client.internal.BasicAPIClient;
 import cash.swazi.momo.constant.Headers;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
@@ -12,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 /**
- * Implementation of {@link cash.swazi.momo.api.SandboxOptionProvider}
- * Handles fetching sandbox user info and creating Sandbox Options {@link cash.swazi.momo.client.Options}
+ * Implementation of {@link SandboxOptionDelegate}
+ * Handles fetching sandbox user info and creating Sandbox Options {@link Options}
  */
-public final class SandboxUserProvisioningClient extends BasicAPIClient implements SandboxOptionProvider {
+public final class SandboxUserProvisioningClient extends BasicAPIClient implements SandboxOptionDelegate {
 
     private final String subscriptionKey;
     private final String baseUrl;
@@ -25,14 +28,24 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         this.subscriptionKey = subscriptionKey;
     }
 
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
     public Options requestSandboxOptions(@NotNull UUID userId, String providerCallbackHost) throws IOException, RequestFailedException {
-        if (!userExists(userId)) {
+        if (!doesUserExist(userId)) {
             createApiUser(userId, providerCallbackHost);
         }
         return fetchApiUserOptions(userId);
     }
 
-
+    /**
+     * Attempts to create API User
+     * @param userId User ID to be created
+     * @param providerCallbackHost callbacks to be used with the API user
+     * @return true, if request was successful
+     * @throws IOException Thrown when request fails to be sent
+     */
     private boolean createApiUser(UUID userId, String providerCallbackHost) throws IOException {
         Map<String,String> headers = new HashMap<>();
         headers.put(Headers.REFERENCE_ID, userId.toString());
@@ -49,7 +62,13 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         return false;
     }
 
-    private boolean userExists(UUID userId) throws IOException {
+    /**
+     *
+     * @param userId  User ID to be checked
+     * @return true, if user exists
+     * @throws IOException Thrown when request was unable to be sent
+     */
+    private boolean doesUserExist(UUID userId) throws IOException {
         Map<String,String> headers = new HashMap<>();
         headers.put(Headers.SUBSCRIPTION_KEY, subscriptionKey);
         Map<String,String> parameters = new HashMap<>();
@@ -64,6 +83,13 @@ public final class SandboxUserProvisioningClient extends BasicAPIClient implemen
         return false;
     }
 
+    /**
+     * Fetches API key from user provisioning service and builds required Options
+     * @param userId User ID
+     * @return Options required to get authenticated with given ID
+     * @throws IOException Thrown when request was unable to be sent
+     * @throws RequestFailedException If API rejected the request. Note: User ID is probably invalid
+     */
     private Options fetchApiUserOptions(UUID userId) throws IOException, RequestFailedException {
         Map<String,String> headers = new HashMap<>();
         headers.put(Headers.SUBSCRIPTION_KEY, subscriptionKey);

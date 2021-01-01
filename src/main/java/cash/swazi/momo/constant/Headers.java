@@ -3,7 +3,7 @@ package cash.swazi.momo.constant;
 /**
  * Few defined header keys
  */
-public class Headers {
+public final class Headers {
     public static final String AUTHORIZATION = "Authorization";
     public static final String SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     public static final String CALLBACK_URL = "X-Callback-Url";

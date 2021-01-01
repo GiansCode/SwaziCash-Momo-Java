@@ -1,6 +1,11 @@
 package cash.swazi.momo.api;
 
+import cash.swazi.momo.api.delegate.CollectionDelegate;
+import cash.swazi.momo.api.delegate.RemittanceDelegate;
+import cash.swazi.momo.api.delegate.SandboxOptionDelegate;
 import cash.swazi.momo.client.*;
+import cash.swazi.momo.client.data.Options;
+
 /**
  *  Static factory class that provides access to different components of the API. This would usually be
  *  used as the entrypoint into the API
@@ -37,7 +42,7 @@ public final class SwaziCashFactory {
      * @param subscriptionKey subscription key provided by sandbox environment provider.
      * @return SandboxOptionProvider, used to create sandbox API Users
      */
-    public static SandboxOptionProvider createSandboxOptionProvider(String subscriptionKey) {
+    public static SandboxOptionDelegate createSandboxOptionProvider(String subscriptionKey) {
         return createSandboxOptionProvider("https://sandbox.momodeveloper.mtn.com/", subscriptionKey);
     }
 
@@ -46,7 +51,7 @@ public final class SwaziCashFactory {
      * @param subscriptionKey Subscription key provided by sandbox environment provider.
      * @return SandboxOptionProvider, used to create sandbox API Users
      */
-    public static SandboxOptionProvider createSandboxOptionProvider(String baseUrl, String subscriptionKey) {
+    public static SandboxOptionDelegate createSandboxOptionProvider(String baseUrl, String subscriptionKey) {
         return new SandboxUserProvisioningClient(baseUrl, subscriptionKey);
     }
 }

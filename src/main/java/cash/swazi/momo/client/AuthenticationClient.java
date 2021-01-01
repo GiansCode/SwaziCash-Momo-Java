@@ -1,7 +1,11 @@
 package cash.swazi.momo.client;
 
 import cash.swazi.momo.api.exception.RequestFailedException;
-import cash.swazi.momo.api.TokenProvider;
+import cash.swazi.momo.api.delegate.TokenProvider;
+import cash.swazi.momo.client.data.Options;
+import cash.swazi.momo.client.data.Response;
+import cash.swazi.momo.client.internal.IRestClient;
+import cash.swazi.momo.client.internal.OptionedAPIClient;
 import cash.swazi.momo.constant.Headers;
 import cash.swazi.momo.model.auth.AccessToken;
 import cash.swazi.momo.model.auth.AccessTokenDeserializer;
@@ -13,7 +17,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 /**
- * Implementation of {@link cash.swazi.momo.api.TokenProvider}
+ * Implementation of {@link TokenProvider}
  * Provides access tokens and handles renewal on expiry
  */
 public final class AuthenticationClient extends OptionedAPIClient implements TokenProvider {

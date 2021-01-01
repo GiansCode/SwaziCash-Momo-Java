@@ -1,6 +1,7 @@
-package cash.swazi.momo.client;
+package cash.swazi.momo.client.internal;
 
 
+import cash.swazi.momo.client.data.Response;
 import cash.swazi.momo.util.ResponseUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,21 +17,24 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 /**
- * Implementation of {@link cash.swazi.momo.client.RestClient}
+ * Implementation of {@link RestClient}
  * Handles sending REST requests
  */
 public final class RestClient implements IRestClient {
+    private static final String DEFAULT_BASE_URL = "https://sandbox.momodeveloper.mtn.com/";
     private final String baseUrl;
 
     public RestClient() {
-        this("https://sandbox.momodeveloper.mtn.com/collection/v1_0");
+        this(DEFAULT_BASE_URL);
     }
 
     public RestClient(String baseUrl) {
 
         this.baseUrl = baseUrl;
     }
-
+    /**
+     *  {@inheritDoc}
+     */
     @Override
     public final Response post(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters, String body) throws URISyntaxException, IOException {
         URI uri = getUri(useBase, parseParameters(path, parameters));
@@ -51,7 +55,9 @@ public final class RestClient implements IRestClient {
             return new Response(statusCode, respStr);
         }
     }
-
+    /**
+     *  {@inheritDoc}
+     */
     @Override
     public final Response get(boolean useBase, String path, Map<String, String> headers, Map<String,String> parameters) throws URISyntaxException, IOException {
         URI uri = getUri(useBase, parseParameters(path, parameters));
@@ -67,6 +73,13 @@ public final class RestClient implements IRestClient {
         }
     }
 
+    /**
+     * Builds the URI with the given parameters
+     * @param withBase Denotes whether the BaseURL should be used in the path
+     * @param path The path relative to base (if used) or full url
+     * @return URI in the form "base/path" (if withBase is true) or "path" (if withBase is false)
+     * @throws URISyntaxException
+     */
     private URI getUri(boolean withBase, String path) throws URISyntaxException {
         if (withBase) {
             return new URIBuilder(baseUrl).setPath(path).build();

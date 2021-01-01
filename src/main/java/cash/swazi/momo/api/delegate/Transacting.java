@@ -1,4 +1,4 @@
-package cash.swazi.momo.api;
+package cash.swazi.momo.api.delegate;
 
 import cash.swazi.momo.api.exception.RequestFailedException;
 import cash.swazi.momo.model.transaction.Balance;

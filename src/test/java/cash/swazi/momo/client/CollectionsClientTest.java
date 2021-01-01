@@ -1,8 +1,9 @@
 package cash.swazi.momo.client;
 
-import cash.swazi.momo.api.CollectionDelegate;
+import cash.swazi.momo.api.delegate.CollectionDelegate;
 import cash.swazi.momo.api.SwaziCashFactory;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.model.requests.Party;
 import cash.swazi.momo.model.requests.PaymentRequest;
 import cash.swazi.momo.model.transaction.TransactionInformation;

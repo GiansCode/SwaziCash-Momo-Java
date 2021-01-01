@@ -1,5 +1,8 @@
 package cash.swazi.momo.client;
 
+import cash.swazi.momo.client.data.Response;
+import cash.swazi.momo.client.internal.IRestClient;
+import cash.swazi.momo.client.internal.RestClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

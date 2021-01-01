@@ -1,14 +1,14 @@
 package cash.swazi.momo.client;
 
 import cash.swazi.momo.api.SwaziCashFactory;
-import cash.swazi.momo.api.Transacting;
+import cash.swazi.momo.api.delegate.Transacting;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.model.transaction.Balance;
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;

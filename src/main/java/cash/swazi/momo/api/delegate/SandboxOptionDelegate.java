@@ -1,7 +1,7 @@
-package cash.swazi.momo.api;
+package cash.swazi.momo.api.delegate;
 
 import cash.swazi.momo.api.exception.RequestFailedException;
-import cash.swazi.momo.client.Options;
+import cash.swazi.momo.client.data.Options;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
  *  {@link cash.swazi.momo.api.SwaziCashFactory#createDisbursementDelegate(Options)}
  *  @see <a href="https://momodeveloper.mtn.com/docs/services/sandbox-provisioning-api/">Sandbox User Provisioning</a>
  */
-public interface SandboxOptionProvider {
+public interface SandboxOptionDelegate {
     /**
      * @param userId Id for API user to be created
      * @param providerCallbackHost Callback host for callbacks to be used in subsequent requests

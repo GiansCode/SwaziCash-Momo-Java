@@ -1,4 +1,4 @@
-package cash.swazi.momo.client;
+package cash.swazi.momo.client.data;
 
 import cash.swazi.momo.util.AuthUtils;
 

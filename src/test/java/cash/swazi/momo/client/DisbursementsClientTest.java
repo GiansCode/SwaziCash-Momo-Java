@@ -1,8 +1,9 @@
 package cash.swazi.momo.client;
 
-import cash.swazi.momo.api.DisbursementDelegate;
+import cash.swazi.momo.api.delegate.DisbursementDelegate;
 import cash.swazi.momo.api.SwaziCashFactory;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.model.requests.Party;
 import cash.swazi.momo.model.requests.TransferRequest;
 import junit.framework.TestCase;

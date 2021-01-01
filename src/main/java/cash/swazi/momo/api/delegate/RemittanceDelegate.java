@@ -1,7 +1,7 @@
-package cash.swazi.momo.api;
+package cash.swazi.momo.api.delegate;
 
 import cash.swazi.momo.api.exception.RequestFailedException;
-import cash.swazi.momo.client.Options;
+import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.model.requests.TransferRequest;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

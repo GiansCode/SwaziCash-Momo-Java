@@ -1,7 +1,9 @@
-package cash.swazi.momo.client;
+package cash.swazi.momo.client.data;
+
+import cash.swazi.momo.client.internal.IRestClient;
 
 /**
- * POJO with data returned from {@link cash.swazi.momo.client.IRestClient}
+ * POJO with data returned from {@link IRestClient}
  */
 public final class Response {
     private final int statusCode;

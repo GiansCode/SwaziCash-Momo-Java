@@ -1,14 +1,15 @@
-package cash.swazi.momo.client;
+package cash.swazi.momo.client.internal;
 
 import cash.swazi.momo.api.exception.FailReason;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Response;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 /**
  * Abstraction between the different Client classes
  */
-abstract class BasicAPIClient {
+public abstract class BasicAPIClient {
     private final IRestClient client;
     private final Gson gson;
 

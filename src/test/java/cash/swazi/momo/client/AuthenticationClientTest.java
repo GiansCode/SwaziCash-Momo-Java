@@ -1,8 +1,9 @@
 package cash.swazi.momo.client;
 
 import cash.swazi.momo.api.SwaziCashFactory;
-import cash.swazi.momo.api.TokenProvider;
+import cash.swazi.momo.api.delegate.TokenProvider;
 import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
 import junit.framework.TestCase;
 
 import java.io.IOException;

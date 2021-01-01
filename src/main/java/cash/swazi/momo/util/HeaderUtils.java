@@ -1,6 +1,6 @@
 package cash.swazi.momo.util;
 
-import cash.swazi.momo.client.Options;
+import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.constant.Headers;
 import cash.swazi.momo.model.auth.AccessToken;
 import org.intellij.lang.annotations.MagicConstant;

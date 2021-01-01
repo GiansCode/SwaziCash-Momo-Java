@@ -1,6 +1,5 @@
-package cash.swazi.momo.api;
+package cash.swazi.momo.api.delegate;
 
-import cash.swazi.momo.client.Options;
 import org.jetbrains.annotations.NotNull;
 
 /**

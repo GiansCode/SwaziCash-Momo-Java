@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * Thrown when the request results in a failed status code
+ * Thrown when the request results in a failed status code, i.e, Request was rejected by API
  */
 public final class RequestFailedException extends Exception {
     private final int statusCode;

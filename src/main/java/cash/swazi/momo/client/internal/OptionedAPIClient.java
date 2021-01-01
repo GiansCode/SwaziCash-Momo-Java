@@ -1,11 +1,12 @@
-package cash.swazi.momo.client;
+package cash.swazi.momo.client.internal;
 
+import cash.swazi.momo.client.data.Options;
 import com.google.gson.Gson;
 
 /**
- * Interface to expose only required requests to higher level
+ * Aggregates clients that require the Option parameters
  */
-abstract class OptionedAPIClient extends BasicAPIClient {
+public abstract class OptionedAPIClient extends BasicAPIClient {
     private final Options options;
     public OptionedAPIClient(Options options) {
         super(options.getBaseUrl());
