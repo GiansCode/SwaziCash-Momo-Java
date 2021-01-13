@@ -73,3 +73,32 @@ try {
     e.printStackTrace();
 }
 ```
+
+### Example of getting transaction info (From collections for an example case)
+[MTN MoMo Collections / RequestToPay - Transacton Info ](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-referenceId-GET?)
+```java
+import cash.swazi.momo.api.SwaziCashFactory;
+import cash.swazi.momo.api.delegate.TransactionDelegate;
+import cash.swazi.momo.api.exception.RequestFailedException;
+import cash.swazi.momo.client.data.Options;
+import cash.swazi.momo.model.transaction.TransactionInformation;
+
+import java.io.IOException;
+import java.util.UUID;
+
+public class TransactionInfoExample {
+    public static void main(String[] args) {
+        Options options = ...; // Create options using above examples
+        TransactionDelegate collections = SwaziCashFactory.createCollectionDelegate(options);
+        UUID referenceId = ...; // reference Id used to send transaction request
+        try {
+            TransactionInformation info = collections.getTransactionInformation(referenceId);
+            System.out.println("The transaction status is: " + info.getStatus());
+            if (info.getStatus() == TransactionInformation.TransactionStatus.FAILED) {
+                System.out.println("Failure reason for transaction: " + info.getReason());
+            }
+        } catch (IOException | RequestFailedException e) {
+            e.printStackTrace();
+        }
+    }
+}```
