@@ -19,7 +19,7 @@ public class Example {
 			"TARGET_ENVIRONMENT", 
 			"CURRENCY"
 		);
-		CollectionsDelegate collections = SwaziCashFactory.createCollectionDelegate(options);
+		CollectionDelegate collections = SwaziCashFactory.createCollectionDelegate(options);
 		try {
 			Balance balance = collections.getBalance();
 			double amt = balance.getAvailableBalance();
@@ -33,7 +33,7 @@ public class Example {
 }
 ```
 ### Using Sandbox Environment
-The API provides easier way to create Options for Sandbox testing.
+The API provides an easier way to create Options for Sandbox testing.
 
 ```java
 SandboxOptionDelegate sandboxDelegate = SwaziCashFactory.createSandboxOptionProvider("YOUR_SUBSCRIPTION_KEY");
@@ -41,3 +41,35 @@ String callbackHost = null; /* If using callbacks, specify the callback url base
 Options options = sandboxDelegate.requestSandboxOptions(id, callbackHost);
 ```
 The returned options can be used to interact with the sandbox environment just as normal.
+
+### Example of sending a Collection payment request
+[MTN MoMo Collections / RequestToPay](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-POST)
+```java
+Options options = ...; // Create options using above examples
+CollectionDelegate collections = SwaziCashFactory.createCollectionDelegate(options);
+
+// Reference to the transaction, to be used later to get transaction info
+UUID referenceId = UUID.randomUUID();
+
+// Info about payer
+Party payer = new Party(Party.PartyIdType.MSISDN, "9658965889");
+
+PaymentRequest request = new PaymentRequest(
+        1000,
+        options.getCurrency(),
+        "4546",
+        payer,
+        "Note for Payer",
+        "Note for Payee"
+);
+/*
+* URL for callback to be used by MoMo API. Must be on the same host as registered with your auth userId
+* Can be null if not required
+*/
+String callbackURL = null; 
+try {
+    collections.requestPayment(referenceId, callbackURL, request);
+} catch (IOException | RequestFailedException e) {
+    e.printStackTrace();
+}
+```
