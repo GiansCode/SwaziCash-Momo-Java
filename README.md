@@ -41,7 +41,7 @@ String callbackHost = null; /* If using callbacks, specify the callback url base
 Options options = sandboxDelegate.requestSandboxOptions(id, callbackHost);
 ```
 The returned options can be used to interact with the sandbox environment just as normal.
-
+---
 ### Example of sending a Collection payment request
 [MTN MoMo Collections / RequestToPay](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-POST)
 ```java
