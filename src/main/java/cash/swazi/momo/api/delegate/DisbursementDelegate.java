@@ -12,7 +12,7 @@ import java.util.UUID;
  *  Interface to interact with Disbursement API of MTN MoMo API
  *  {@link cash.swazi.momo.api.SwaziCashFactory#createDisbursementDelegate(Options)}
  */
-public interface DisbursementDelegate extends Transacting, SelfAuthenticating {
+public interface DisbursementDelegate extends TransactionDelegate, SelfAuthenticating {
     /**
      * Used to transfer an amount from the owner’s account to a payee account.
      * @param referenceId Reference-Id to request Transaction Info later

@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Defines basic transaction queries that are valid through any APIs
  */
-public interface Transacting {
+public interface TransactionDelegate {
 
     /**
      * @param transactionId Reference id used for the transaction

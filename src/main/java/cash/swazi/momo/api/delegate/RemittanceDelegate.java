@@ -12,7 +12,7 @@ import java.util.UUID;
  *  Interface to interact with Remittance API of MTN MoMo API
  *  {@link cash.swazi.momo.api.SwaziCashFactory#createRemittanceDelegate(Options)}
  */
-public interface RemittanceDelegate extends Transacting, SelfAuthenticating {
+public interface RemittanceDelegate extends TransactionDelegate, SelfAuthenticating {
     /**
      * Used to transfer an amount from the owner’s account to a payee account.
      * @param referenceId Reference-Id to request Transaction Info later

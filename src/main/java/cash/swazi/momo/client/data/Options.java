@@ -1,6 +1,7 @@
 package cash.swazi.momo.client.data;
 
 import cash.swazi.momo.util.AuthUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 /**
@@ -16,7 +17,7 @@ public final class Options {
     private final String currency;
 
 
-    public Options(String subscriptionKey, String apiKey, UUID userId, String baseUrl, String targetEnvironment, String currency) {
+    public Options(@NotNull String subscriptionKey, @NotNull String apiKey, @NotNull UUID userId, @NotNull String baseUrl, @NotNull String targetEnvironment, @NotNull String currency) {
         this.subscriptionKey = subscriptionKey;
         this.apiKey = apiKey;
         this.userId = userId;
@@ -26,30 +27,37 @@ public final class Options {
         this.currency = currency;
     }
 
+    @NotNull
     public String getSubscriptionKey() {
         return subscriptionKey;
     }
 
+    @NotNull
     public String getApiKey() {
         return apiKey;
     }
 
+    @NotNull
     public UUID getUserId() {
         return userId;
     }
 
+    @NotNull
     public String getBaseUrl() {
         return baseUrl;
     }
 
+    @NotNull
     public String getBasicAuthorization() {
         return basicAuthorization;
     }
 
+    @NotNull
     public String getTargetEnvironment() {
         return targetEnvironment;
     }
 
+    @NotNull
     public String getCurrency() {
         return currency;
     }

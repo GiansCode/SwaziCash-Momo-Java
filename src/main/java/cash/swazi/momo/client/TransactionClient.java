@@ -1,6 +1,6 @@
 package cash.swazi.momo.client;
 
-import cash.swazi.momo.api.delegate.Transacting;
+import cash.swazi.momo.api.delegate.TransactionDelegate;
 import cash.swazi.momo.api.delegate.CollectionDelegate;
 import cash.swazi.momo.api.delegate.DisbursementDelegate;
 import cash.swazi.momo.api.delegate.RemittanceDelegate;
@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Implementation of {@link Transacting}
+ * Implementation of {@link TransactionDelegate}
  * Abstraction between the 3 Delegates {@link CollectionDelegate}, {@link DisbursementDelegate}, {@link RemittanceDelegate}
  */
-public abstract class TransactionClient extends OptionedAPIClient implements Transacting {
+public abstract class TransactionClient extends OptionedAPIClient implements TransactionDelegate {
     private final TokenProvider tokenProvider;
     private final String apiPath;
     private final String requestPath;

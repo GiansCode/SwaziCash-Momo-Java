@@ -13,7 +13,7 @@ import java.util.UUID;
  *  Interface to interact with Collection API of MTN MoMo API
  *  {@link cash.swazi.momo.api.SwaziCashFactory#createCollectionDelegate(Options)}
  */
-public interface CollectionDelegate extends Transacting, SelfAuthenticating {
+public interface CollectionDelegate extends TransactionDelegate, SelfAuthenticating {
     /**
      * Request payment from a user
      * @param referenceId Reference-Id to request Transaction Info later

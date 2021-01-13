@@ -1,7 +1,7 @@
 package cash.swazi.momo.client;
 
 import cash.swazi.momo.api.SwaziCashFactory;
-import cash.swazi.momo.api.delegate.Transacting;
+import cash.swazi.momo.api.delegate.TransactionDelegate;
 import cash.swazi.momo.api.exception.RequestFailedException;
 import cash.swazi.momo.client.data.Options;
 import cash.swazi.momo.model.transaction.Balance;
@@ -29,15 +29,15 @@ public class TransactionClientTest extends TestCase {
     }
 
 
-    private final Transacting transacting = new CollectionClient(options);
+    private final TransactionDelegate transactionDelegate = new CollectionClient(options);
 
     public void testGetBalance() throws IOException, RequestFailedException {
-        Balance balance = transacting.getBalance();
+        Balance balance = transactionDelegate.getBalance();
         assert balance != null;
     }
 
     public void testIsAccountActive() throws IOException, RequestFailedException {
-        Boolean result = transacting.isAccountActive(TransactionClient.AccountHolderIdType.MSISDN, "123456");
+        Boolean result = transactionDelegate.isAccountActive(TransactionClient.AccountHolderIdType.MSISDN, "123456");
         assert result != null;
     }
 }
